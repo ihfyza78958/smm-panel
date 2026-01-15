@@ -2,7 +2,7 @@
     <div class="mb-8 text-center">
         <a href="/" class="inline-flex items-center gap-2 mb-6">
             <span class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-600 to-violet-600 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-indigo-200">S</span>
-            <span class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-700">SMM NEPAL</span>
+            <span class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-700">Nepalboost</span>
         </a>
         <h2 class="text-2xl font-bold text-gray-900">Create Account</h2>
         <p class="mt-2 text-sm text-gray-600">Join the #1 SMM Panel in Nepal today</p>

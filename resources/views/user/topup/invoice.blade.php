@@ -103,7 +103,7 @@
                                 <h4 class="font-bold text-gray-800 mb-2">Nabil Bank</h4>
                                 <div class="grid grid-cols-3 gap-2 text-sm">
                                     <div class="text-gray-500">Account Name:</div>
-                                    <div class="col-span-2 font-bold">SMM NEPAL PVT LTD</div>
+                                    <div class="col-span-2 font-bold">NEPALBOOST PVT LTD</div>
                                     <div class="text-gray-500">Account No:</div>
                                     <div class="col-span-2 font-mono font-bold">00100010000012345</div>
                                     <div class="text-gray-500">Branch:</div>

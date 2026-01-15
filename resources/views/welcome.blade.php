@@ -5,17 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
     <!-- SEO Meta Tags -->
-    <title>SMM Nepal - #1 Cheapest SMM Panel for Nepal & India | Buy Followers & Likes</title>
+    <title>Nepalboost - #1 Cheapest SMM Panel for Nepal & India | Buy Followers & Likes</title>
     <meta name="description" content="Best & Cheapest SMM Panel in Nepal and India. Buy Instagram followers, TikTok views, YouTube watchtime, with instant delivery via eSewa, Khalti, IME Pay, UPI & Paytm. Wholesale SMM services for resellers.">
-    <meta name="keywords" content="smm panel nepal, smm panel india, cheapest smm panel india, buy instagram followers nepal, tiktok views nepal, youtube watchtime india, facebook likes, esewa smm panel, khalti payment, upi smm panel, paytm smm panel, social media marketing reseller">
-    <meta name="author" content="SMM Nepal">
+    <meta name="keywords" content="nepalboost, smm panel nepal, smm panel india, cheapest smm panel india, buy instagram followers nepal, tiktok views nepal, youtube watchtime india, facebook likes, esewa smm panel, khalti payment, upi smm panel, paytm smm panel, social media marketing reseller">
+    <meta name="author" content="Nepalboost">
     <meta name="robots" content="index, follow">
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ url('/') }}">
-    <meta property="og:title" content="SMM Nepal - Best & Cheapest SMM Panel for Nepal and India">
-    <meta property="og:description" content="Boost your social media presence with the #1 SMM Panel in Nepal & India. Cheapest rates for Instagram, TikTok, YouTube & Facebook. Instant delivery with local payments.">
+    <meta property="og:title" content="Nepalboost - Best & Cheapest SMM Panel for Nepal and India">
+    <meta property="og:description" content="Boost your social media presence with Nepalboost. Cheapest rates for Instagram, TikTok, YouTube & Facebook. Instant delivery with local payments.">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -50,7 +50,7 @@
                 <div class="flex items-center gap-2">
                     <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center text-white font-bold text-2xl shadow-lg shadow-indigo-200">S</div>
                     <a href="/" class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-700">
-                        SMM NEPAL
+                        <span class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-indigo-200">Nepalboost</span>
                     </a>
                 </div>
                 <div class="hidden md:flex space-x-8 items-center">
@@ -186,10 +186,10 @@
                 <div>
                     <h2 class="text-3xl font-bold text-gray-900 mb-6">What is SMM Panel Nepal?</h2>
                     <div class="prose prose-indigo text-gray-600 leading-relaxed space-y-4">
-                        <p>
-                            <strong>SMM Nepal</strong> is an online social media marketing tool (SMM Panel) that allows individuals and businesses to buy likes, followers, and views for various social media platforms such as Instagram, Facebook, TikTok, YouTube, and Twitter.
+                        <p class="text-lg text-gray-600 leading-relaxed mb-6">
+                            <strong>Nepalboost</strong> is an online social media marketing tool (SMM Panel) that allows individuals and businesses to buy likes, followers, and views for various social media platforms such as Instagram, Facebook, TikTok, YouTube, and Twitter.
                         </p>
-                        <p>
+                        <p class="text-lg text-gray-600 leading-relaxed">
                             We are known as the <span class="text-indigo-600 font-bold">Cheapest SMM Panel in Nepal</span> because we connect directly with main providers to offer wholesale rates. Whether you are an influencer looking to boost your reach or a brand trying to establish credibility, our services are designed to help you grow.
                         </p>
                         <p>
@@ -365,7 +365,7 @@
                 <div class="prose prose-indigo max-w-none text-gray-600">
                     <h2 class="text-3xl font-bold text-gray-900">Why choose us as your SMM Panel?</h2>
                     <p>
-                        SMM Nepal is not just another panel; we are a dedicated team of marketing experts aiming to provide the <strong>cheapest and most effective social media marketing services</strong> in South Asia. Whether you are from Kathmandu, Delhi, Mumbai, or Pokhara, our services are tailored to boost your digital presence.
+                        Nepalboost is not just another panel; we are a dedicated team of marketing experts aiming to provide the <strong>cheapest and most effective social media marketing services</strong> in South Asia. Whether you are from Kathmandu, Delhi, Mumbai, or Pokhara, our services are tailored to boost your digital presence.
                     </p>
                     <p>
                         We understand the algorithm of Instagram, TikTok, and YouTube. Our views and likes are designed to help your content go viral. With over 5 years of experience, we have processed millions of orders for influencers, brands, and celebrities.
@@ -463,7 +463,7 @@
                 <div class="col-span-1 md:col-span-2">
                     <div class="flex items-center gap-2 mb-6">
                          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-indigo-900/20">S</div>
-                        <span class="text-2xl font-bold text-white">SMM NEPAL</span>
+                        <span class="text-2xl font-bold text-white">Nepalboost</span>
                     </div>
                     <p class="text-gray-400 text-sm leading-relaxed max-w-sm mb-6">
                         The trusted partner for influencers, brands, and agencies. We provide the cheapest and most reliable social media services in Nepal & India.
@@ -508,7 +508,7 @@
             </div>
 
             <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-                <p class="text-gray-500 text-sm">&copy; {{ date('Y') }} SMM Nepal. All rights reserved.</p>
+                <p class="text-gray-500 text-sm">&copy; {{ date('Y') }} Nepalboost. All rights reserved.</p>
                 <div class="flex items-center gap-2 text-sm text-gray-500">
                     <span>Made with</span>
                     <svg class="w-4 h-4 text-red-500 fill-current animate-pulse" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>

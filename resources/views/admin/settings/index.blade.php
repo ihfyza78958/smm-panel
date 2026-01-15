@@ -19,7 +19,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div class="md:col-span-2">
                             <label class="block text-sm font-medium text-gray-700 mb-1">Website Title</label>
-                            <input type="text" name="site_name" value="SMM NEPAL" class="w-full rounded-lg border-gray-300 focus:ring-indigo-500 focus:border-indigo-500">
+                            <input type="text" name="site_name" value="Nepalboost" class="w-full rounded-lg border-gray-300 focus:ring-indigo-500 focus:border-indigo-500">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Currency Symbol</label>

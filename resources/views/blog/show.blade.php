@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
     <!-- SEO Meta Tags -->
-    <title>{{ $post->title }} - SMM Nepal</title>
+    <title>{{ $post->title }} - Nepalboost</title>
     <meta name="description" content="{{ $post->excerpt }}">
     
     <!-- Fonts -->
@@ -32,7 +32,7 @@
                 <div class="flex items-center gap-2">
                     <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center text-white font-bold text-2xl shadow-lg shadow-indigo-200">S</div>
                     <a href="/" class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-700">
-                        SMM NEPAL
+                        Nepalboost
                     </a>
                 </div>
                 <div class="hidden md:flex space-x-8 items-center">
@@ -66,7 +66,7 @@
                 <div class="flex items-center justify-center gap-4 text-sm text-gray-500 mb-8">
                      <span class="px-3 py-1 bg-indigo-50 text-indigo-700 rounded-full font-bold text-xs uppercase">{{ $post->created_at->format('M d, Y') }}</span>
                      <span>•</span>
-                     <span>By SMM Nepal</span>
+                     <span>By Nepalboost</span>
                 </div>
             </div>
 
@@ -100,7 +100,7 @@
                <div class="col-span-2">
                    <div class="flex items-center gap-2 mb-4">
                         <div class="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-bold">S</div>
-                       <span class="text-xl font-bold text-gray-900">SMM NEPAL</span>
+                       <span class="text-xl font-bold text-gray-900">Nepalboost</span>
                    </div>
                    <p class="text-gray-500 text-sm leading-relaxed max-w-xs">
                        The #1 Cheapest SMM Panel in Nepal. We provide high-quality social media marketing services for Instagram, Facebook, TikTok, YouTube, and more.
@@ -127,7 +127,7 @@
                 </div>
            </div>
            <div class="border-t border-gray-100 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-               <p class="text-gray-400 text-sm">&copy; {{ date('Y') }} SMM Nepal. All rights reserved.</p>
+               <p class="text-gray-400 text-sm">&copy; {{ date('Y') }} Nepalboost. All rights reserved.</p>
            </div>
        </div>
    </footer>

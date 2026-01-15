@@ -1,8 +1,13 @@
+# Dependencies
 /vendor
 /node_modules
+
+# Build artifacts
 /public/build
 /public/hot
 /public/storage
+
+# Storage
 /storage/*.key
 /storage/app/public/
 /storage/framework/cache/data/*
@@ -10,14 +15,38 @@
 /storage/framework/testing/*
 /storage/framework/views/*
 /storage/logs/*
+
+# Environment files (NEVER commit these!)
 .env
-.env.backup
-.env.production
+.env.*
+!.env.example
+!.env.production
+
+# Testing
 .phpunit.result.cache
 Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
+
+# IDEs
 /.fleet
 /.idea
 /.vscode
+
+# Deployment & Backups
+/backups/
+backup_*.sql
+backup_*.sql.gz
+/certbot/
+deployment.log
+/logs/
+
+# OS files
+.DS_Store
+Thumbs.db
+*.log
+
+# Docker development files (keep prod files)
+docker-compose.override.yml
+

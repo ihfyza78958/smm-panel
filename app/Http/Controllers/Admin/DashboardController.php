@@ -17,6 +17,10 @@ class DashboardController extends Controller
             'orders' => Order::count(),
             'revenue' => Transaction::where('type', 'deposit')->where('status', 'completed')->sum('amount'),
             'orders_pending' => Order::where('status', 'pending')->count(),
+            'profit' => Order::whereIn('status', ['completed', 'processing', 'in_progress'])->sum('profit'),
+            'today_orders' => Order::whereDate('created_at', today())->count(),
+            'today_revenue' => Transaction::where('type', 'deposit')->where('status', 'completed')->whereDate('created_at', today())->sum('amount'),
+            'active_services' => \App\Models\Service::where('is_active', true)->count(),
         ];
 
         return view('admin.dashboard', compact('stats'));

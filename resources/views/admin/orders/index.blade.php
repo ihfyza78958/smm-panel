@@ -4,11 +4,11 @@
         
         <!-- Filter Tabs -->
         <div class="flex bg-gray-100 p-1 rounded-lg">
-            <button class="px-4 py-1.5 rounded-md text-sm font-medium bg-white text-gray-800 shadow-sm transition">All</button>
-            <button class="px-4 py-1.5 rounded-md text-sm font-medium text-gray-500 hover:text-gray-900 hover:bg-white/50 transition">Pending</button>
-            <button class="px-4 py-1.5 rounded-md text-sm font-medium text-gray-500 hover:text-gray-900 hover:bg-white/50 transition">Processing</button>
-            <button class="px-4 py-1.5 rounded-md text-sm font-medium text-gray-500 hover:text-gray-900 hover:bg-white/50 transition">Completed</button>
-            <button class="px-4 py-1.5 rounded-md text-sm font-medium text-gray-500 hover:text-gray-900 hover:bg-white/50 transition">Failed</button>
+            <a href="{{ route('admin.orders.index') }}" class="px-4 py-1.5 rounded-md text-sm font-medium {{ !request('status') ? 'bg-white text-gray-800 shadow-sm' : 'text-gray-500 hover:text-gray-900 hover:bg-white/50' }} transition">All</a>
+            <a href="{{ route('admin.orders.index', ['status' => 'pending']) }}" class="px-4 py-1.5 rounded-md text-sm font-medium {{ request('status') === 'pending' ? 'bg-white text-gray-800 shadow-sm' : 'text-gray-500 hover:text-gray-900 hover:bg-white/50' }} transition">Pending</a>
+            <a href="{{ route('admin.orders.index', ['status' => 'processing']) }}" class="px-4 py-1.5 rounded-md text-sm font-medium {{ request('status') === 'processing' ? 'bg-white text-gray-800 shadow-sm' : 'text-gray-500 hover:text-gray-900 hover:bg-white/50' }} transition">Processing</a>
+            <a href="{{ route('admin.orders.index', ['status' => 'completed']) }}" class="px-4 py-1.5 rounded-md text-sm font-medium {{ request('status') === 'completed' ? 'bg-white text-gray-800 shadow-sm' : 'text-gray-500 hover:text-gray-900 hover:bg-white/50' }} transition">Completed</a>
+            <a href="{{ route('admin.orders.index', ['status' => 'cancelled']) }}" class="px-4 py-1.5 rounded-md text-sm font-medium {{ request('status') === 'cancelled' ? 'bg-white text-gray-800 shadow-sm' : 'text-gray-500 hover:text-gray-900 hover:bg-white/50' }} transition">Failed</a>
         </div>
     </div>
 
@@ -69,9 +69,9 @@
                              {{ $order->created_at->format('M d H:i') }}
                         </td>
                         <td class="px-6 py-4 text-right">
-                             <button class="text-gray-400 hover:text-indigo-600">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"></path></svg>
-                            </button>
+                             <a href="{{ route('admin.orders.show', $order) }}" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">
+                                View
+                            </a>
                         </td>
                     </tr>
                     @empty

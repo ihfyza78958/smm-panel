@@ -3,14 +3,15 @@
 .gitignore
 .gitattributes
 
-# Dependencies
+# Dependencies (rebuilt inside container)
 /node_modules
 /vendor
 
-# Environment
+# Environment files (mounted as volume, not baked into image)
 .env
 .env.backup
-.env.production
+.env.local
+.env.testing
 
 # IDE
 .vscode
@@ -29,8 +30,11 @@
 /public/storage
 /storage/*.key
 
-# Logs
-/storage/logs
+# Logs & framework cache (not needed in image)
+/storage/logs/*
+/storage/framework/cache/data/*
+/storage/framework/sessions/*
+/storage/framework/views/*
 npm-debug.log
 yarn-error.log
 
@@ -41,10 +45,7 @@ Thumbs.db
 # Documentation
 README.md
 DOCKER_DEPLOYMENT.md
-*.md
 
-# Docker
-docker-compose.yml
-docker-compose.prod.yml
-Dockerfile
-.dockerignore
+# Backups
+/backups
+/logs

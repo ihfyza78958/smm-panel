@@ -8,16 +8,19 @@ services:
     restart: unless-stopped
     working_dir: /var/www
     volumes:
-      - ./:/var/www
-      - php-fpm-socket:/var/run/php-fpm
+      - app-storage:/var/www/storage
+      - app-public:/var/www/public
+      - ./.env:/var/www/.env
     environment:
       - PHP_MEMORY_LIMIT=512M
       - PHP_MAX_EXECUTION_TIME=300
     networks:
       - smm-network
     depends_on:
-      - db
-      - redis
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     healthcheck:
       test: ["CMD-SHELL", "php-fpm -t || exit 1"]
       interval: 30s
@@ -31,11 +34,12 @@ services:
     ports:
       - "8945:80"
     volumes:
-      - ./:/var/www
-      - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
-      - php-fpm-socket:/var/run/php-fpm
+      - app-public:/var/www/public:ro
+      - app-storage:/var/www/storage:ro
+      - ./docker/nginx/conf.d/:/etc/nginx/conf.d/:ro
     depends_on:
-      - app
+      app:
+        condition: service_healthy
     networks:
       - smm-network
     healthcheck:
@@ -86,35 +90,49 @@ services:
 
   # Laravel Scheduler - Runs cron jobs
   scheduler:
+    build:
+      context: .
+      dockerfile: Dockerfile
     image: smm-panel-app:latest
     container_name: smm-scheduler
     restart: unless-stopped
     working_dir: /var/www
     volumes:
-      - ./:/var/www
+      - app-storage:/var/www/storage
+      - ./.env:/var/www/.env:ro
     networks:
       - smm-network
     depends_on:
-      - app
-      - db
-      - redis
-    command: sh -c "while true; do php artisan schedule:run --verbose --no-interaction & sleep 60; done"
+      app:
+        condition: service_healthy
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    command: ["sh", "-c", "while true; do php artisan schedule:run --verbose --no-interaction & sleep 60; done"]
 
   # Laravel Queue Worker - Processes background jobs
   worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
     image: smm-panel-app:latest
     container_name: smm-worker
     restart: unless-stopped
     working_dir: /var/www
     volumes:
-      - ./:/var/www
+      - app-storage:/var/www/storage
+      - ./.env:/var/www/.env:ro
     networks:
       - smm-network
     depends_on:
-      - app
-      - db
-      - redis
-    command: php artisan queue:work redis --sleep=3 --tries=3 --max-time=3600
+      app:
+        condition: service_healthy
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    command: ["php", "artisan", "queue:work", "redis", "--sleep=3", "--tries=3", "--max-time=3600"]
     deploy:
       replicas: 1
       resources:
@@ -130,5 +148,7 @@ volumes:
     driver: local
   redis-data:
     driver: local
-  php-fpm-socket:
+  app-storage:
+    driver: local
+  app-public:
     driver: local

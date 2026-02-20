@@ -54,7 +54,15 @@ class FetchServices extends Command
                     // Usually we set price > provider_rate. Let's set a default markup of 20% if new.
                     
                     $providerRate = $serviceData['rate'];
-                    $price = $providerRate; // TODO: Add Markup Logic
+                    
+                    // Auto markup: Apply profit margin (default 20%)
+                    $existingService = Service::where('smm_provider_id', $provider->id)
+                        ->where('provider_service_id', $serviceData['service'])
+                        ->first();
+                    
+                    // Keep existing margin if already set, otherwise default 20%
+                    $margin = $existingService ? $existingService->profit_margin : 20;
+                    $price = $providerRate * (1 + ($margin / 100));
 
                     Service::updateOrCreate(
                         [

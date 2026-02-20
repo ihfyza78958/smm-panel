@@ -34,18 +34,24 @@
             <x-nav-link href="{{ route('admin.dashboard') }}" :active="request()->routeIs('admin.dashboard')" icon="navigator" class="!text-slate-300 hover:!bg-slate-800 hover:!text-white">Dashboard</x-nav-link>
             
             <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider px-3 mt-6 mb-2">Management</div>
-            <x-nav-link href="{{ route('admin.users.index') }}" :active="request()->routeIs('admin.users.index')" icon="users" class="!text-slate-300 hover:!bg-slate-800 hover:!text-white">Users</x-nav-link>
-            <x-nav-link href="{{ route('admin.orders.index') }}" :active="request()->routeIs('admin.orders.index')" icon="shopping-bag" class="!text-slate-300 hover:!bg-slate-800 hover:!text-white">Orders</x-nav-link>
-            <x-nav-link href="{{ route('admin.services.index') }}" :active="request()->routeIs('admin.services.index')" icon="layers" class="!text-slate-300 hover:!bg-slate-800 hover:!text-white">Services</x-nav-link>
-            <x-nav-link href="{{ route('admin.providers.index') }}" :active="request()->routeIs('admin.providers.index')" icon="server" class="!text-slate-300 hover:!bg-slate-800 hover:!text-white">Providers</x-nav-link>
+            <x-nav-link href="{{ route('admin.users.index') }}" :active="request()->routeIs('admin.users.*')" icon="users" class="!text-slate-300 hover:!bg-slate-800 hover:!text-white">Users</x-nav-link>
+            <x-nav-link href="{{ route('admin.orders.index') }}" :active="request()->routeIs('admin.orders.*')" icon="shopping-bag" class="!text-slate-300 hover:!bg-slate-800 hover:!text-white">Orders</x-nav-link>
+            <x-nav-link href="{{ route('admin.categories.index') }}" :active="request()->routeIs('admin.categories.*')" icon="grid" class="!text-slate-300 hover:!bg-slate-800 hover:!text-white">Categories</x-nav-link>
+            <x-nav-link href="{{ route('admin.services.index') }}" :active="request()->routeIs('admin.services.*')" icon="layers" class="!text-slate-300 hover:!bg-slate-800 hover:!text-white">Services</x-nav-link>
+            <x-nav-link href="{{ route('admin.providers.index') }}" :active="request()->routeIs('admin.providers.*')" icon="server" class="!text-slate-300 hover:!bg-slate-800 hover:!text-white">Providers</x-nav-link>
+
+            <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider px-3 mt-6 mb-2">Marketing</div>
+            <x-nav-link href="{{ route('admin.coupons.index') }}" :active="request()->routeIs('admin.coupons.*')" icon="tag" class="!text-slate-300 hover:!bg-slate-800 hover:!text-white">Coupons</x-nav-link>
+            <x-nav-link href="{{ route('admin.announcements.index') }}" :active="request()->routeIs('admin.announcements.*')" icon="bell" class="!text-slate-300 hover:!bg-slate-800 hover:!text-white">Announcements</x-nav-link>
             <x-nav-link href="{{ route('admin.blogs.index') }}" :active="request()->routeIs('admin.blogs.*')" icon="book-open" class="!text-slate-300 hover:!bg-slate-800 hover:!text-white">Blog & News</x-nav-link>
 
             <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider px-3 mt-6 mb-2">Support</div>
             <x-nav-link href="{{ route('admin.tickets.index') }}" :active="request()->routeIs('admin.tickets.*')" icon="life-buoy" class="!text-slate-300 hover:!bg-slate-800 hover:!text-white">Tickets</x-nav-link>
-            <x-nav-link href="{{ route('admin.transactions.index') }}" :active="request()->routeIs('admin.transactions.index')" icon="credit-card" class="!text-slate-300 hover:!bg-slate-800 hover:!text-white">Transactions</x-nav-link>
+            <x-nav-link href="{{ route('admin.transactions.index') }}" :active="request()->routeIs('admin.transactions.*')" icon="credit-card" class="!text-slate-300 hover:!bg-slate-800 hover:!text-white">Transactions</x-nav-link>
             
             <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider px-3 mt-6 mb-2">System</div>
-            <x-nav-link href="{{ route('admin.settings.index') }}" :active="request()->routeIs('admin.settings.index')" icon="settings" class="!text-slate-300 hover:!bg-slate-800 hover:!text-white">Settings</x-nav-link>
+            <x-nav-link href="{{ route('admin.settings.index') }}" :active="request()->routeIs('admin.settings.*')" icon="settings" class="!text-slate-300 hover:!bg-slate-800 hover:!text-white">Settings</x-nav-link>
+            <x-nav-link href="{{ route('admin.logs.index') }}" :active="request()->routeIs('admin.logs.*')" icon="activity" class="!text-slate-300 hover:!bg-slate-800 hover:!text-white">Activity Logs</x-nav-link>
         </nav>
 
         <!-- Admin Profile -->

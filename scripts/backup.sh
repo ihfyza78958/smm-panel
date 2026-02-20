@@ -13,6 +13,15 @@ RETENTION_DAYS=30
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
 COMPOSE_FILE="docker-compose.prod.yml"
 
+# Detect docker compose command
+if docker compose version &>/dev/null; then
+    DC="docker compose"
+elif command -v docker-compose &>/dev/null; then
+    DC="docker-compose"
+else
+    echo "Docker Compose not found!"; exit 1
+fi
+
 # Colors
 GREEN='\033[0;32m'
 RED='\033[0;31m'
@@ -54,7 +63,7 @@ DB_NAME=$(grep ^DB_DATABASE= .env | cut -d= -f2)
 log "📦 Backing up database..."
 BACKUP_FILE="$BACKUP_DIR/database/db_backup_$TIMESTAMP.sql"
 
-docker-compose -f $COMPOSE_FILE exec -T db mysqldump \
+$DC -f $COMPOSE_FILE exec -T db mysqldump \
     -u "$DB_USER" \
     -p"$DB_PASS" \
     "$DB_NAME" \
@@ -116,7 +125,7 @@ Files Size: $(du -h "$FILES_BACKUP" 2>/dev/null | cut -f1 || echo "N/A")
 Total Backup Size: $(du -sh "$BACKUP_DIR" | cut -f1)
 
 Container Status:
-$(docker-compose -f $COMPOSE_FILE ps)
+$($DC -f $COMPOSE_FILE ps)
 EOF
 
 success "Backup manifest created: $MANIFEST_FILE"

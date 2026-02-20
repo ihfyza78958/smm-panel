@@ -34,6 +34,15 @@ warning() {
 COMPOSE_FILE="docker-compose.prod.yml"
 BACKUP_DIR="backups/database"
 
+# Detect docker compose command
+if docker compose version &>/dev/null; then
+    DC="docker compose"
+elif command -v docker-compose &>/dev/null; then
+    DC="docker-compose"
+else
+    echo "Docker Compose not found!"; exit 1
+fi
+
 # Check if backup directory exists
 if [ ! -d "$BACKUP_DIR" ]; then
     error "Backup directory not found: $BACKUP_DIR"
@@ -83,7 +92,7 @@ DB_NAME=$(grep ^DB_DATABASE= .env | cut -d= -f2)
 # Create safety backup before restore
 log "📦 Creating safety backup of current database..."
 SAFETY_BACKUP="backups/safety_backup_$(date +%Y%m%d_%H%M%S).sql"
-docker-compose -f $COMPOSE_FILE exec -T db mysqldump \
+$DC -f $COMPOSE_FILE exec -T db mysqldump \
     -u "$DB_USER" \
     -p"$DB_PASS" \
     "$DB_NAME" \
@@ -104,14 +113,14 @@ fi
 log "🔄 Restoring database from backup..."
 
 # Drop and recreate database
-docker-compose -f $COMPOSE_FILE exec -T db mysql \
+$DC -f $COMPOSE_FILE exec -T db mysql \
     -u "$DB_USER" \
     -p"$DB_PASS" \
     -e "DROP DATABASE IF EXISTS $DB_NAME; CREATE DATABASE $DB_NAME CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;" \
     2>/dev/null || error "Failed to recreate database"
 
 # Import backup
-docker-compose -f $COMPOSE_FILE exec -T db mysql \
+$DC -f $COMPOSE_FILE exec -T db mysql \
     -u "$DB_USER" \
     -p"$DB_PASS" \
     "$DB_NAME" \
@@ -124,8 +133,8 @@ success "Database restored successfully!"
 
 # Clear caches
 log "🧹 Clearing application caches..."
-docker-compose -f $COMPOSE_FILE exec -T app php artisan cache:clear >/dev/null 2>&1 || true
-docker-compose -f $COMPOSE_FILE exec -T app php artisan config:clear >/dev/null 2>&1 || true
+$DC -f $COMPOSE_FILE exec -T app php artisan cache:clear >/dev/null 2>&1 || true
+$DC -f $COMPOSE_FILE exec -T app php artisan config:clear >/dev/null 2>&1 || true
 
 success "Caches cleared"
 

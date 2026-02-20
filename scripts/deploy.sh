@@ -1,89 +1,118 @@
 #!/bin/bash
 
 ##################################
-# SMM Panel - Simple Deployment
+# SMM Panel - One-Click Deployment
 ##################################
 
 set -e
 
-echo "🚀 SMM Panel Deployment"
-echo "======================="
+# Parse flags
+SEED=false
+for arg in "$@"; do
+    case $arg in
+        --seed) SEED=true ;;
+        --help|-h)
+            echo "Usage: ./scripts/deploy.sh [OPTIONS]"
+            echo ""
+            echo "Options:"
+            echo "  --seed    Seed database with demo data after deployment"
+            echo "  --help    Show this help message"
+            exit 0
+            ;;
+    esac
+done
+
+echo "🚀 SMM Panel - One-Click Deployment"
+echo "====================================="
 echo ""
 
+# Detect docker compose command (v2 plugin or v1 standalone)
+if docker compose version &>/dev/null; then
+    DC="docker compose"
+elif command -v docker-compose &>/dev/null; then
+    DC="docker-compose"
+else
+    echo "❌ Docker Compose not found!"
+    echo "Install: https://docs.docker.com/compose/install/"
+    exit 1
+fi
+
 # Check Docker
-if ! command -v docker &> /dev/null; then
+if ! command -v docker &>/dev/null; then
     echo "❌ Docker not installed!"
     echo "Install: curl -fsSL https://get.docker.com | sh"
     exit 1
 fi
 
 echo "✓ Docker found"
+echo "✓ Using: $DC"
 
-# Check .env
+# Setup .env if missing
 if [ ! -f .env ]; then
     if [ -f .env.production ]; then
         cp .env.production .env
-        echo "⚠️  Created .env from template"
-        echo "⚠️  Please edit .env and configure required values!"
-        read -p "Press Enter after updating .env..."
+        echo "⚠️  Created .env from .env.production template"
+        echo "⚠️  IMPORTANT: Edit .env and set your passwords/domain before going live!"
+    elif [ -f .env.example ]; then
+        cp .env.example .env
+        echo "⚠️  Created .env from .env.example template"
+        echo "⚠️  IMPORTANT: Edit .env and configure database/Redis settings!"
     else
-        echo "❌ .env.production not found!"
+        echo "❌ No .env template found! Create .env manually."
         exit 1
     fi
 fi
 
 echo "✓ Environment configured"
 
-# Build and start
+# Build and start all services
 echo ""
-echo "🐳 Starting Docker containers..."
-docker-compose -f docker-compose.prod.yml up -d --build
+echo "🐳 Building and starting Docker containers..."
+$DC -f docker-compose.prod.yml up -d --build
 
+# Wait for app container to be healthy
 echo ""
-echo "⏳ Waiting for services..."
-sleep 20
+echo "⏳ Waiting for application to be ready..."
+TIMEOUT=120
+ELAPSED=0
+while [ $ELAPSED -lt $TIMEOUT ]; do
+    if $DC -f docker-compose.prod.yml exec -T app php artisan --version &>/dev/null; then
+        echo "✅ Application is ready!"
+        break
+    fi
+    sleep 3
+    ELAPSED=$((ELAPSED + 3))
+    echo "  Waiting... (${ELAPSED}s / ${TIMEOUT}s)"
+done
 
-# Install dependencies
-echo ""
-echo "📦 Installing dependencies..."
-docker-compose -f docker-compose.prod.yml exec -T app composer install --no-interaction --no-dev --optimize-autoloader || true
-
-# Setup app
-echo ""
-echo "🔧 Setting up application..."
-
-# Generate key if needed
-if ! grep -q "APP_KEY=base64:" .env 2>/dev/null; then
-    docker-compose -f docker-compose.prod.yml exec -T app php artisan key:generate --force
+if [ $ELAPSED -ge $TIMEOUT ]; then
+    echo "❌ Application did not start within ${TIMEOUT}s"
+    echo "Check logs: $DC -f docker-compose.prod.yml logs app"
+    exit 1
 fi
 
-# Run migrations
-docker-compose -f docker-compose.prod.yml exec -T app php artisan migrate --force
-
-# Seed database (optional)
-read -p "Seed database with demo data? (y/N): " seed
-if [[ $seed =~ ^[Yy]$ ]]; then
-    docker-compose -f docker-compose.prod.yml exec -T app php artisan db:seed --force
+# Seed database if requested
+if [ "$SEED" = true ]; then
+    echo ""
+    echo "🌱 Seeding database..."
+    $DC -f docker-compose.prod.yml exec -T app php artisan db:seed --force --no-interaction
 fi
-
-# Optimize
-docker-compose -f docker-compose.prod.yml exec -T app php artisan optimize
-
-# Permissions
-docker-compose -f docker-compose.prod.yml exec -T app chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 
 echo ""
 echo "✅ Deployment Complete!"
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo "Access: http://localhost:8945"
-echo "Admin: admin@smmpanel.com / password"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo ""
-echo "⚠️  IMPORTANT: Change admin password!"
+echo "If you seeded: admin@smmpanel.com / password"
+echo ""
+echo "⚠️  IMPORTANT: Change admin password after first login!"
 echo ""
 echo "Commands:"
-echo "  Logs:    docker-compose -f docker-compose.prod.yml logs -f"
-echo "  Restart: docker-compose -f docker-compose.prod.yml restart"
-echo "  Stop:    docker-compose -f docker-compose.prod.yml down"
+echo "  Logs:    $DC -f docker-compose.prod.yml logs -f"
+echo "  Restart: $DC -f docker-compose.prod.yml restart"
+echo "  Stop:    $DC -f docker-compose.prod.yml down"
+echo "  Seed:    $DC -f docker-compose.prod.yml exec app php artisan db:seed --force"
+echo "  Health:  ./scripts/health-check.sh"
 echo ""

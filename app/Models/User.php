@@ -26,6 +26,13 @@ class User extends Authenticatable
         'role',
         'api_key',
         'timezone',
+        'is_banned',
+        'google_id',
+        'ref_code',
+        'ref_by',
+        'spent',
+        'discount_percentage',
+        'currency',
     ];
 
     /**
@@ -49,6 +56,9 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'balance' => 'decimal:4',
+            'spent' => 'decimal:4',
+            'is_banned' => 'boolean',
+            'discount_percentage' => 'decimal:2',
         ];
     }
 
@@ -65,5 +75,31 @@ class User extends Authenticatable
     public function tickets(): HasMany
     {
         return $this->hasMany(Ticket::class);
+    }
+
+    public function referrals(): HasMany
+    {
+        return $this->hasMany(Referral::class);
+    }
+
+    /**
+     * Generate a new API key for the user.
+     */
+    public function generateApiKey(): string
+    {
+        $key = bin2hex(random_bytes(32));
+        $this->update(['api_key' => $key]);
+        return $key;
+    }
+
+    /**
+     * Calculate price with user discount applied.
+     */
+    public function getDiscountedPrice(float $basePrice): float
+    {
+        if ($this->discount_percentage > 0) {
+            return $basePrice * (1 - $this->discount_percentage / 100);
+        }
+        return $basePrice;
     }
 }

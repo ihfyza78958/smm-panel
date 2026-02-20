@@ -54,10 +54,11 @@
         <nav class="flex-1 overflow-y-auto py-6 px-4 space-y-1 custom-scrollbar">
             <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')" icon="home">Dashboard</x-nav-link>
             <x-nav-link href="{{ route('orders.new') }}" :active="request()->routeIs('orders.new')" icon="plus-circle">New Order</x-nav-link>
+            <x-nav-link href="{{ route('orders.mass') }}" :active="request()->routeIs('orders.mass')" icon="layers">Mass Order</x-nav-link>
             <x-nav-link href="{{ route('orders.history') }}" :active="request()->routeIs('orders.history')" icon="shopping-bag">Orders</x-nav-link>
             <x-nav-link href="{{ route('wallet.index') }}" :active="request()->routeIs('wallet.index')" icon="credit-card">Add Funds</x-nav-link>
             <x-nav-link href="{{ route('tickets.index') }}" :active="request()->routeIs('tickets.*')" icon="life-buoy">Support</x-nav-link>
-            <x-nav-link href="{{ route('profile.edit') }}" :active="request()->routeIs('profile.edit')" icon="user">Profile</x-nav-link>
+            <x-nav-link href="{{ route('profile.edit') }}" :active="request()->routeIs('profile.edit')" icon="user">Profile & API</x-nav-link>
         </nav>
 
         <!-- User Profile Simplified -->

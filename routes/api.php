@@ -8,6 +8,8 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-// Public V2 Adapter API
-Route::post('/v2', [ApiController::class, 'handle']);
-Route::get('/v2', [ApiController::class, 'handle']); // Support GET for services list usually
+// Public V2 Adapter API — rate limited to 60 requests/minute per IP
+Route::middleware('throttle:60,1')->group(function () {
+    Route::post('/v2', [ApiController::class, 'handle']);
+    Route::get('/v2', [ApiController::class, 'handle']);
+});

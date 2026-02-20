@@ -15,6 +15,15 @@ COMPOSE_FILE="docker-compose.prod.yml"
 LOG_FILE="logs/health-check.log"
 mkdir -p logs
 
+# Detect docker compose command
+if docker compose version &>/dev/null; then
+    DC="docker compose"
+elif command -v docker-compose &>/dev/null; then
+    DC="docker-compose"
+else
+    echo "Docker Compose not found!"; exit 1
+fi
+
 log() {
     echo "[$(date +'%Y-%m-%d %H:%M:%S')] $1" | tee -a $LOG_FILE
 }
@@ -57,7 +66,7 @@ check_database() {
     DB_USER=$(grep ^DB_USERNAME= .env | cut -d= -f2)
     DB_PASS=$(grep ^DB_PASSWORD= .env | cut -d= -f2)
     
-    if docker-compose -f $COMPOSE_FILE exec -T db mysqladmin ping -h localhost -u "$DB_USER" -p"$DB_PASS" 2>&1 | grep -q "mysqld is alive"; then
+    if $DC -f $COMPOSE_FILE exec -T db mysqladmin ping -h localhost -u "$DB_USER" -p"$DB_PASS" 2>&1 | grep -q "mysqld is alive"; then
         echo -e "${GREEN}✅ Database is alive${NC}"
     else
         echo -e "${RED}❌ Database is NOT responding${NC}"
@@ -69,7 +78,7 @@ check_database() {
 check_redis() {
     log "Checking Redis..."
     
-    if docker-compose -f $COMPOSE_FILE exec -T redis redis-cli ping 2>&1 | grep -q "PONG"; then
+    if $DC -f $COMPOSE_FILE exec -T redis redis-cli ping 2>&1 | grep -q "PONG"; then
         echo -e "${GREEN}✅ Redis is responding${NC}"
     else
         echo -e "${RED}❌ Redis is NOT responding${NC}"
@@ -97,7 +106,7 @@ check_disk() {
 check_logs() {
     log "Checking for recent errors..."
     
-    ERROR_COUNT=$(docker-compose -f $COMPOSE_FILE exec -T app tail -n 100 storage/logs/laravel.log 2>/dev/null | grep -c "ERROR" || echo 0)
+    ERROR_COUNT=$($DC -f $COMPOSE_FILE exec -T app tail -n 100 storage/logs/laravel.log 2>/dev/null | grep -c "ERROR" || echo 0)
     
     if [ "$ERROR_COUNT" -eq 0 ]; then
         echo -e "${GREEN}✅ No recent errors in logs${NC}"
@@ -111,7 +120,7 @@ check_queue() {
     log "Checking queue workers..."
     
     if docker ps --format '{{.Names}}' | grep -q "smm-worker"; then
-        WORKER_STATUS=$(docker-compose -f $COMPOSE_FILE exec -T worker ps aux | grep "queue:work" || echo "")
+        WORKER_STATUS=$($DC -f $COMPOSE_FILE exec -T worker ps aux | grep "queue:work" || echo "")
         
         if [ -n "$WORKER_STATUS" ]; then
             echo -e "${GREEN}✅ Queue worker is active${NC}"

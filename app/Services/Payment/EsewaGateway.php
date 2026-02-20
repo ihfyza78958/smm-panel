@@ -13,14 +13,9 @@ class EsewaGateway implements PaymentInterface
 
     public function __construct()
     {
-        $this->merchantCode = config('services.esewa.merchant_code', 'EPAYTEST');
-        $this->verifyUrl = config('services.esewa.debug') 
-            ? 'https://uat.esewa.com.np/epay/transrec' 
-            : 'https://esewa.com.np/epay/transrec';
-            
-        $this->payUrl = config('services.esewa.debug') 
-            ? 'https://uat.esewa.com.np/epay/main' 
-            : 'https://esewa.com.np/epay/main';
+        $this->merchantCode = config('gateways.esewa.merchant_id', 'EPAYTEST');
+        $this->verifyUrl = config('gateways.esewa.verification_url', 'https://rc.esewa.com.np/mobile/transaction');
+        $this->payUrl = config('gateways.esewa.url', 'https://rc-epay.esewa.com.np/api/epay/main/v2/form');
     }
 
     public function initiate(float $amount, string $transactionId): array

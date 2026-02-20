@@ -15,6 +15,10 @@ use App\Models\Setting;
 
 // ── Public Routes ──
 Route::get('/', function () {
+    return view('home');
+})->name('home');
+
+Route::get('/smm', function () {
     $categories = Category::with(['services' => function($q) {
         $q->where('is_active', true)->limit(5);
     }])->where('is_active', true)->orderBy('sort_order')->get();
@@ -23,7 +27,7 @@ Route::get('/', function () {
     $announcements = Announcement::getActive();
     
     return view('welcome', compact('categories', 'latest_posts', 'announcements'));
-});
+})->name('smm');
 
 Route::get('/blog', function () {
     $posts = BlogPost::where('is_published', true)->latest()->paginate(12);

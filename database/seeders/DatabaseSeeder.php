@@ -21,10 +21,10 @@ class DatabaseSeeder extends Seeder
     {
         // 1. Create Users (idempotent - safe to re-run)
         $admin = User::firstOrCreate(
-            ['email' => 'admin@smmpanel.com'],
+            ['email' => 'admin@nepalboost.com'],
             [
-                'name' => 'Admin User',
-                'password' => Hash::make('password'),
+                'name' => 'Admin',
+                'password' => Hash::make(env('ADMIN_PASSWORD', 'Nb@dmin2026!')),
                 'role' => 'admin',
                 'balance' => 100000,
                 'ref_code' => Str::random(8),
@@ -32,7 +32,7 @@ class DatabaseSeeder extends Seeder
         );
 
         $testUser = User::firstOrCreate(
-            ['email' => 'user@smmpanel.com'],
+            ['email' => 'user@nepalboost.com'],
             [
                 'name' => 'Test Customer',
                 'password' => Hash::make('password'),

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class TransactionController extends Controller
 {
@@ -15,8 +16,44 @@ class TransactionController extends Controller
             ->where('status', 'completed')
             ->whereMonth('created_at', now()->month)
             ->sum('amount');
+        $pendingDeposits = \App\Models\Transaction::where('type', 'deposit')
+            ->where('status', 'pending')
+            ->sum('amount');
             
-        return view('admin.transactions.index', compact('transactions', 'totalDeposits', 'monthDeposits'));
+        return view('admin.transactions.index', compact('transactions', 'totalDeposits', 'monthDeposits', 'pendingDeposits'));
+    }
+
+    public function exportCsv()
+    {
+        $filename = 'transactions-' . now()->format('Y-m-d') . '.csv';
+        
+        $response = new StreamedResponse(function () {
+            $handle = fopen('php://output', 'w');
+            fputcsv($handle, ['ID', 'Transaction ID', 'User', 'Email', 'Gateway', 'Type', 'Amount', 'Status', 'Date']);
+            
+            \App\Models\Transaction::with('user')->orderBy('id', 'desc')->chunk(500, function ($transactions) use ($handle) {
+                foreach ($transactions as $tx) {
+                    fputcsv($handle, [
+                        $tx->id,
+                        $tx->transaction_id ?? '-',
+                        $tx->user->name ?? 'Unknown',
+                        $tx->user->email ?? '-',
+                        $tx->payment_method ?? '-',
+                        $tx->type,
+                        $tx->amount,
+                        $tx->status,
+                        $tx->created_at->format('Y-m-d H:i:s'),
+                    ]);
+                }
+            });
+            
+            fclose($handle);
+        });
+        
+        $response->headers->set('Content-Type', 'text/csv');
+        $response->headers->set('Content-Disposition', "attachment; filename=\"{$filename}\"");
+        
+        return $response;
     }
 
     public function approve(\App\Models\Transaction $transaction)

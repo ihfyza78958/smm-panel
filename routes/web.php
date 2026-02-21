@@ -136,6 +136,7 @@ Route::middleware(['auth', 'verified', 'banned', 'role:admin'])->prefix('admin')
 
     // Transactions
     Route::get('/transactions', [\App\Http\Controllers\Admin\TransactionController::class, 'index'])->name('transactions.index');
+    Route::get('/transactions/export-csv', [\App\Http\Controllers\Admin\TransactionController::class, 'exportCsv'])->name('transactions.export-csv');
     Route::post('/transactions/{transaction}/approve', [\App\Http\Controllers\Admin\TransactionController::class, 'approve'])->name('transactions.approve');
     Route::post('/transactions/{transaction}/reject', [\App\Http\Controllers\Admin\TransactionController::class, 'reject'])->name('transactions.reject');
     

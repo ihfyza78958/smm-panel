@@ -19,14 +19,23 @@ class CouponController extends Controller
     {
         $request->validate([
             'code' => 'required|string|unique:coupons,code|max:50',
-            'amount' => 'required|numeric|min:0.01',
-            'max_uses' => 'required|integer|min:1',
+            'type' => 'required|in:fixed,percentage',
+            'value' => 'required|numeric|min:0.01',
+            'max_uses' => 'nullable|integer|min:0',
+            'max_uses_per_user' => 'nullable|integer|min:1',
             'expires_at' => 'nullable|date|after:now',
-            'is_active' => 'boolean',
         ]);
 
-        $coupon = Coupon::create($request->only('code', 'amount', 'max_uses', 'expires_at', 'is_active'));
-        ActivityLog::log('coupon_created', "Coupon {$coupon->code} created (Amount: {$coupon->amount})");
+        $coupon = Coupon::create([
+            'code' => strtoupper($request->code),
+            'type' => $request->type,
+            'amount' => $request->value,
+            'max_uses' => $request->max_uses ?: 0,
+            'max_uses_per_user' => $request->max_uses_per_user ?: 1,
+            'expires_at' => $request->expires_at,
+            'is_active' => true,
+        ]);
+        ActivityLog::log('coupon_created', "Coupon {$coupon->code} created ({$coupon->type}: {$coupon->amount})");
 
         return back()->with('success', 'Coupon created successfully.');
     }

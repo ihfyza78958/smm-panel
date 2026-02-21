@@ -9,13 +9,6 @@
         </a>
     </div>
 
-    @if(session('success'))
-        <div class="mb-4 p-4 bg-green-50 border border-green-200 rounded-lg text-sm text-green-700">{{ session('success') }}</div>
-    @endif
-    @if(session('error'))
-        <div class="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">{{ session('error') }}</div>
-    @endif
-
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <!-- Order Details -->
         <div class="lg:col-span-2 space-y-6">
@@ -104,7 +97,7 @@
                         <option value="in_progress" {{ $order->status === 'in_progress' ? 'selected' : '' }}>In Progress</option>
                         <option value="completed" {{ $order->status === 'completed' ? 'selected' : '' }}>Completed</option>
                         <option value="partial" {{ $order->status === 'partial' ? 'selected' : '' }}>Partial</option>
-                        <option value="cancelled" {{ $order->status === 'cancelled' ? 'selected' : '' }}>Cancelled (+ Refund)</option>
+                        <option value="canceled" {{ in_array($order->status, ['canceled', 'cancelled']) ? 'selected' : '' }}>Cancelled (+ Refund)</option>
                         <option value="refunded" {{ $order->status === 'refunded' ? 'selected' : '' }}>Refunded</option>
                     </select>
                     <button type="submit" class="w-full bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition text-sm font-medium">

@@ -5,10 +5,6 @@
         <h2 class="text-2xl font-bold text-gray-800">Announcements</h2>
     </div>
 
-    @if(session('success'))
-        <div class="mb-4 p-4 bg-green-50 border border-green-200 rounded-lg text-sm text-green-700">{{ session('success') }}</div>
-    @endif
-
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <!-- Create Form -->
         <div>

@@ -7,10 +7,6 @@
         </button>
     </div>
 
-    @if(session('success'))
-        <div class="mb-4 p-4 bg-green-50 border border-green-200 rounded-lg text-sm text-green-700">{{ session('success') }}</div>
-    @endif
-
     <form id="settings-form" method="POST" action="{{ route('admin.settings.store') }}">
         @csrf
         

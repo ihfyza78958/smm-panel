@@ -58,13 +58,18 @@ class OrderController extends Controller
     public function updateStatus(Request $request, Order $order)
     {
         $request->validate([
-            'status' => 'required|in:pending,processing,completed,partial,canceled,refunded',
+            'status' => 'required|in:pending,processing,in_progress,completed,partial,canceled,cancelled,refunded',
             'start_count' => 'nullable|integer|min:0',
             'remains' => 'nullable|integer|min:0',
         ]);
 
         $oldStatus = $order->status;
         $newStatus = $request->status;
+        
+        // Normalize cancelled → canceled
+        if ($newStatus === 'cancelled') {
+            $newStatus = 'canceled';
+        }
 
         DB::transaction(function () use ($order, $request, $oldStatus, $newStatus) {
             // Handle refund if canceling or refunding

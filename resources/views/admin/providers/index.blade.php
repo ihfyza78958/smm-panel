@@ -18,7 +18,7 @@
                 </span>
             </div>
 
-            <h3 class="font-bold text-lg text-gray-900 mb-1">{{ $provider->name }}</h3>
+            <h3 class="font-bold text-lg text-gray-900 mb-1">{{ $provider->domain ?? $provider->url }}</h3>
             <a href="{{ $provider->url }}" target="_blank" class="text-xs text-indigo-500 hover:underline mb-4 block">{{ $provider->url }}</a>
 
             <div class="space-y-3 mb-6">
@@ -36,9 +36,12 @@
                 <a href="{{ route('admin.providers.edit', $provider) }}" class="flex-1 bg-white border border-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-50 transition text-center">
                     Edit
                 </a>
-                <button class="flex-1 bg-white border border-gray-200 text-indigo-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-50 transition">
-                    Sync Services
-                </button>
+                <form method="POST" action="{{ route('admin.providers.destroy', $provider) }}" onsubmit="return confirm('Delete this provider?');" class="flex-1">
+                    @csrf @method('DELETE')
+                    <button type="submit" class="w-full bg-white border border-red-200 text-red-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-red-50 transition">
+                        Delete
+                    </button>
+                </form>
             </div>
         </div>
         @empty

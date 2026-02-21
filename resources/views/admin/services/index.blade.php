@@ -10,20 +10,13 @@
         </div>
     </div>
 
-    @if(session('success'))
-        <div class="mb-4 p-4 bg-green-50 border border-green-200 rounded-lg text-sm text-green-700">{{ session('success') }}</div>
-    @endif
-    @if(session('error'))
-        <div class="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">{{ session('error') }}</div>
-    @endif
-
-    <!-- Category Tabs (UI only mostly) -->
+    <!-- Category Tabs -->
     <div class="flex overflow-x-auto pb-4 gap-2 mb-4 no-scrollbar">
-        <button class="px-4 py-2 bg-indigo-600 text-white rounded-full text-sm font-semibold whitespace-nowrap shadow-md shadow-indigo-200">All Services</button>
+        <a href="{{ route('admin.services.index') }}" class="px-4 py-2 {{ !request('category') ? 'bg-indigo-600 text-white shadow-md shadow-indigo-200' : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50' }} rounded-full text-sm font-semibold whitespace-nowrap transition">All Services</a>
         @foreach($categories as $category)
-            <button class="px-4 py-2 bg-white text-gray-600 border border-gray-200 hover:bg-gray-50 rounded-full text-sm font-medium whitespace-nowrap transition">
+            <a href="{{ route('admin.services.index', ['category' => $category->id]) }}" class="px-4 py-2 {{ request('category') == $category->id ? 'bg-indigo-600 text-white shadow-md shadow-indigo-200' : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50' }} rounded-full text-sm font-medium whitespace-nowrap transition">
                 {{ $category->name }}
-            </button>
+            </a>
         @endforeach
     </div>
 

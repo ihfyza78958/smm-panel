@@ -488,10 +488,10 @@
                 <div>
                     <h4 class="font-bold text-white mb-6 uppercase tracking-wider text-sm">Company</h4>
                     <ul class="space-y-4 text-sm text-gray-400">
-                        <li><a href="#" class="hover:text-indigo-400 transition">About Us</a></li>
+                        <li><a href="https://nepalboost.com" class="hover:text-indigo-400 transition">Nepalboost IT</a></li>
                         <li><a href="#services" class="hover:text-indigo-400 transition">Our Services</a></li>
                         <li><a href="#blog" class="hover:text-indigo-400 transition">Blog / News</a></li>
-                        <li><a href="#" class="hover:text-indigo-400 transition">Contact Support</a></li>
+                        <li><a href="https://nepalboost.com#contact" class="hover:text-indigo-400 transition">Contact Support</a></li>
                     </ul>
                 </div>
 

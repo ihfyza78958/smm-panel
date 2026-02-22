@@ -31,11 +31,11 @@
     
     <!-- Footer Links -->
     <div class="mt-8 text-center text-sm text-gray-500">
-        <a href="#" class="hover:text-gray-900">Privacy</a>
+        <a href="{{ route('page.privacy') }}" class="hover:text-gray-900">Privacy</a>
         <span class="mx-2">•</span>
-        <a href="#" class="hover:text-gray-900">Terms</a>
+        <a href="{{ route('page.terms') }}" class="hover:text-gray-900">Terms</a>
         <span class="mx-2">•</span>
-        <a href="/" class="hover:text-gray-900">Home</a>
+        <a href="https://nepalboost.com" class="hover:text-gray-900">Nepalboost IT</a>
     </div>
 
 </body>

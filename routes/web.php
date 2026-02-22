@@ -35,6 +35,11 @@ Route::get('/terms', [App\Http\Controllers\PageController::class, 'terms'])->nam
 Route::get('/privacy', [App\Http\Controllers\PageController::class, 'privacy'])->name('page.privacy');
 Route::get('/services', [\App\Http\Controllers\Guest\ServiceController::class, 'index'])->name('guest.services');
 
+Route::get('/sitemap.xml', function () {
+    $posts = BlogPost::where('is_published', true)->latest()->get();
+    return response()->view('sitemap', compact('posts'))->header('Content-Type', 'text/xml');
+})->name('sitemap');
+
 // ── Authenticated User Routes ──
 Route::middleware(['auth', 'verified', 'banned'])->group(function () {
     

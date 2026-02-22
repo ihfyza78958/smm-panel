@@ -7,6 +7,56 @@
     <!-- SEO Meta Tags -->
     <title>{{ $post->title }} - Nepalboost</title>
     <meta name="description" content="{{ $post->excerpt }}">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="{{ route('blog.show', $post->slug) }}">
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="{{ route('blog.show', $post->slug) }}">
+    <meta property="og:title" content="{{ $post->title }}">
+    <meta property="og:description" content="{{ $post->excerpt }}">
+    <meta property="og:site_name" content="Nepalboost">
+    @if($post->featured_image)
+    <meta property="og:image" content="{{ asset('storage/' . $post->featured_image) }}">
+    @endif
+    <meta property="article:published_time" content="{{ $post->created_at->toIso8601String() }}">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $post->title }}">
+    <meta name="twitter:description" content="{{ $post->excerpt }}">
+    @if($post->featured_image)
+    <meta name="twitter:image" content="{{ asset('storage/' . $post->featured_image) }}">
+    @endif
+    
+    <!-- JSON-LD Article -->
+    <script type="application/ld+json">
+    {
+        "@@context": "https://schema.org",
+        "@@type": "Article",
+        "headline": "{{ $post->title }}",
+        "description": "{{ $post->excerpt }}",
+        "url": "{{ route('blog.show', $post->slug) }}",
+        @if($post->featured_image)
+        "image": "{{ asset('storage/' . $post->featured_image) }}",
+        @endif
+        "datePublished": "{{ $post->created_at->toIso8601String() }}",
+        "dateModified": "{{ $post->updated_at->toIso8601String() }}",
+        "author": {
+            "@@type": "Organization",
+            "name": "Nepalboost"
+        },
+        "publisher": {
+            "@@type": "Organization",
+            "name": "Nepalboost",
+            "url": "{{ url('/') }}"
+        },
+        "mainEntityOfPage": {
+            "@@type": "WebPage",
+            "@@id": "{{ route('blog.show', $post->slug) }}"
+        }
+    }
+    </script>
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

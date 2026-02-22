@@ -4,8 +4,38 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <title>Blog - Nepalboost</title>
-    <meta name="description" content="Latest news, tips, and updates about social media marketing services from Nepalboost.">
+    <title>Blog - Nepalboost | SMM Tips, Social Media Marketing Guides</title>
+    <meta name="description" content="Latest news, tips, and updates about social media marketing services from Nepalboost. Learn how to grow your Instagram, TikTok, YouTube & Facebook.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="{{ route('blog.index') }}">
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ route('blog.index') }}">
+    <meta property="og:title" content="Blog - Nepalboost">
+    <meta property="og:description" content="Latest news, tips, and updates about social media marketing services from Nepalboost.">
+    <meta property="og:site_name" content="Nepalboost">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Blog - Nepalboost">
+    <meta name="twitter:description" content="Latest SMM tips and social media marketing guides.">
+    
+    <!-- JSON-LD -->
+    <script type="application/ld+json">
+    {
+        "@@context": "https://schema.org",
+        "@@type": "Blog",
+        "name": "Nepalboost Blog",
+        "url": "{{ route('blog.index') }}",
+        "description": "Latest news, tips, and updates about social media marketing services",
+        "publisher": {
+            "@@type": "Organization",
+            "name": "Nepalboost",
+            "url": "{{ url('/') }}"
+        }
+    }
+    </script>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

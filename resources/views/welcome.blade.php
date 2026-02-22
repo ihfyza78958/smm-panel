@@ -11,11 +11,47 @@
     <meta name="author" content="Nepalboost">
     <meta name="robots" content="index, follow">
     
+    <!-- Canonical -->
+    <link rel="canonical" href="{{ url('/') }}">
+    
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ url('/') }}">
     <meta property="og:title" content="Nepalboost - Best & Cheapest SMM Panel for Nepal and India">
     <meta property="og:description" content="Boost your social media presence with Nepalboost. Cheapest rates for Instagram, TikTok, YouTube & Facebook. Instant delivery with local payments.">
+    <meta property="og:site_name" content="Nepalboost">
+    <meta property="og:locale" content="en_US">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Nepalboost - Best & Cheapest SMM Panel for Nepal and India">
+    <meta name="twitter:description" content="Boost your social media presence with Nepalboost. Cheapest rates for Instagram, TikTok, YouTube & Facebook. Instant delivery with local payments.">
+    
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@@context": "https://schema.org",
+        "@@type": "WebSite",
+        "name": "Nepalboost",
+        "url": "{{ url('/') }}",
+        "description": "Best & Cheapest SMM Panel in Nepal and India",
+        "potentialAction": {
+            "@@type": "SearchAction",
+            "target": "{{ url('/services') }}?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+        }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+        "@@context": "https://schema.org",
+        "@@type": "Organization",
+        "name": "Nepalboost",
+        "url": "{{ url('/') }}",
+        "description": "Best & Cheapest SMM Panel in Nepal and India. Buy Instagram followers, TikTok views, YouTube watchtime with instant delivery.",
+        "sameAs": []
+    }
+    </script>
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

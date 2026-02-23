@@ -1,12 +1,49 @@
 <x-admin-layout>
     <x-slot name="header">Services</x-slot>
-    <div class="flex justify-between items-center mb-6">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
         <h2 class="text-2xl font-bold text-gray-800">Services Management</h2>
-        <div class="flex gap-3">
-            <a href="{{ route('admin.services.create') }}" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition flex items-center gap-2">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                Add Service
+        <div class="flex gap-3 flex-wrap">
+            <a href="{{ route('admin.providers.index') }}" class="bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 transition flex items-center gap-2 text-sm font-medium">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                Import from API
             </a>
+            <a href="{{ route('admin.services.create') }}" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition flex items-center gap-2 text-sm font-medium">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                Add Manual
+            </a>
+        </div>
+    </div>
+
+    @if(session('success'))
+        <div class="mb-4 bg-green-50 border border-green-200 rounded-xl p-4 text-sm text-green-700 font-medium">{{ session('success') }}</div>
+    @endif
+
+    <!-- Bulk Price Update -->
+    <div x-data="{ showBulk: false }" class="mb-4">
+        <button @click="showBulk = !showBulk" class="text-sm text-indigo-600 hover:text-indigo-800 font-medium flex items-center gap-1">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
+            Bulk Price Update
+        </button>
+        <div x-show="showBulk" x-transition class="mt-3 bg-amber-50 border border-amber-200 rounded-xl p-4">
+            <form method="POST" action="{{ route('admin.services.bulk-update-prices') }}" class="flex flex-wrap items-end gap-4">
+                @csrf
+                <div>
+                    <label class="block text-xs font-medium text-amber-800 mb-1">Profit Margin %</label>
+                    <input type="number" name="margin" value="20" min="0" step="0.1" class="w-24 rounded-lg border-amber-300 text-sm focus:ring-amber-500 focus:border-amber-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-amber-800 mb-1">Category (optional)</label>
+                    <select name="category_id" class="rounded-lg border-amber-300 text-sm focus:ring-amber-500 focus:border-amber-500">
+                        <option value="">All categories</option>
+                        @foreach($categories as $cat)
+                            <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <button type="submit" onclick="return confirm('This will recalculate prices for all services with a provider rate. Continue?')" class="bg-amber-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-amber-700 transition">
+                    Apply Margin
+                </button>
+            </form>
         </div>
     </div>
 
@@ -26,50 +63,77 @@
             <table class="w-full text-sm text-left">
                 <thead class="text-xs text-gray-500 uppercase bg-gray-50 border-b border-gray-100">
                     <tr>
-                        <th class="px-6 py-4 font-semibold w-16">ID</th>
-                        <th class="px-6 py-4 font-semibold">Service Name</th>
-                        <th class="px-6 py-4 font-semibold">Category</th>
-                        <th class="px-6 py-4 font-semibold text-right">Price (NPR)</th>
-                        <th class="px-6 py-4 font-semibold text-center">Min / Max</th>
-                        <th class="px-6 py-4 font-semibold text-center">Status</th>
-                        <th class="px-6 py-4 font-semibold text-right">Actions</th>
+                        <th class="px-4 py-4 font-semibold w-12">ID</th>
+                        <th class="px-4 py-4 font-semibold">Service Name</th>
+                        <th class="px-4 py-4 font-semibold">Category</th>
+                        <th class="px-4 py-4 font-semibold">Provider</th>
+                        <th class="px-4 py-4 font-semibold text-right">Cost</th>
+                        <th class="px-4 py-4 font-semibold text-right">Price (NPR)</th>
+                        <th class="px-4 py-4 font-semibold text-right">Margin</th>
+                        <th class="px-4 py-4 font-semibold text-center">Min / Max</th>
+                        <th class="px-4 py-4 font-semibold text-center">Status</th>
+                        <th class="px-4 py-4 font-semibold text-right">Actions</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100">
                     @forelse($services as $service)
                     <tr class="hover:bg-gray-50 transition group">
-                        <td class="px-6 py-4 text-gray-400 font-mono text-xs">{{ $service->id }}</td>
-                        <td class="px-6 py-4">
-                            <div class="font-medium text-gray-900">{{ $service->name }}</div>
-                            <div class="text-xs text-gray-400">Provider ID: {{ $service->provider_service_id ?? 'N/A' }}</div>
+                        <td class="px-4 py-4 text-gray-400 font-mono text-xs">{{ $service->id }}</td>
+                        <td class="px-4 py-4">
+                            <div class="font-medium text-gray-900 text-xs leading-relaxed">{{ $service->name }}</div>
+                            @if($service->provider_service_id)
+                                <div class="text-[10px] text-gray-400 font-mono">PID: {{ $service->provider_service_id }}</div>
+                            @endif
                         </td>
-                         <td class="px-6 py-4">
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-800">
-                                {{ $service->category->name ?? 'Uncategorized' }}
+                        <td class="px-4 py-4">
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-800">
+                                {{ $service->category->name ?? 'N/A' }}
                             </span>
                         </td>
-                        <td class="px-6 py-4 text-right font-bold text-gray-800">
+                        <td class="px-4 py-4">
+                            @if($service->provider)
+                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-purple-50 text-purple-700" title="{{ $service->provider->url }}">
+                                    {{ $service->provider->domain }}
+                                </span>
+                            @else
+                                <span class="text-xs text-gray-400">Manual</span>
+                            @endif
+                        </td>
+                        <td class="px-4 py-4 text-right text-xs text-gray-500 font-mono">
+                            {{ $service->provider_rate ? number_format($service->provider_rate, 4) : '—' }}
+                        </td>
+                        <td class="px-4 py-4 text-right font-bold text-gray-800">
                             {{ number_format($service->price, 2) }}
                         </td>
-                        <td class="px-6 py-4 text-center text-xs text-gray-500">
+                        <td class="px-4 py-4 text-right">
+                            @if($service->provider_rate && $service->provider_rate > 0)
+                                @php $margin = (($service->price - $service->provider_rate) / $service->provider_rate) * 100; @endphp
+                                <span class="text-xs font-semibold {{ $margin > 0 ? 'text-green-600' : 'text-red-600' }}">
+                                    {{ number_format($margin, 1) }}%
+                                </span>
+                            @else
+                                <span class="text-xs text-gray-400">—</span>
+                            @endif
+                        </td>
+                        <td class="px-4 py-4 text-center text-xs text-gray-500">
                             {{ $service->min_quantity }} - {{ $service->max_quantity }}
                         </td>
-                         <td class="px-6 py-4 text-center">
-                             <form method="POST" action="{{ route('admin.services.toggle', $service) }}" class="inline">
+                        <td class="px-4 py-4 text-center">
+                            <form method="POST" action="{{ route('admin.services.toggle', $service) }}" class="inline">
                                 @csrf @method('PATCH')
-                                <button type="submit" class="px-2.5 py-1 rounded-full text-xs font-semibold {{ $service->is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
-                                    {{ $service->is_active ? 'Active' : 'Inactive' }}
+                                <button type="submit" class="px-2 py-0.5 rounded-full text-xs font-semibold {{ $service->is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                    {{ $service->is_active ? 'Active' : 'Off' }}
                                 </button>
                             </form>
                         </td>
-                        <td class="px-6 py-4 text-right opacity-0 group-hover:opacity-100 transition-opacity">
+                        <td class="px-4 py-4 text-right opacity-0 group-hover:opacity-100 transition-opacity">
                             <div class="flex justify-end gap-2">
-                                <a href="{{ route('admin.services.edit', $service) }}" class="text-blue-600 hover:text-blue-900">
+                                <a href="{{ route('admin.services.edit', $service) }}" class="text-blue-600 hover:text-blue-900" title="Edit">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
                                 </a>
                                 <form method="POST" action="{{ route('admin.services.destroy', $service) }}" onsubmit="return confirm('Delete this service?');" class="inline">
                                     @csrf @method('DELETE')
-                                    <button type="submit" class="text-red-600 hover:text-red-900">
+                                    <button type="submit" class="text-red-600 hover:text-red-900" title="Delete">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                                     </button>
                                 </form>
@@ -78,7 +142,10 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="7" class="px-6 py-10 text-center text-gray-500">No services found.</td>
+                        <td colspan="10" class="px-6 py-10 text-center text-gray-500">
+                            <p>No services found.</p>
+                            <a href="{{ route('admin.providers.index') }}" class="text-indigo-600 hover:underline text-sm font-medium mt-2 inline-block">Import from API provider &rarr;</a>
+                        </td>
                     </tr>
                     @endforelse
                 </tbody>

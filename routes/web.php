@@ -135,6 +135,11 @@ Route::middleware(['auth', 'verified', 'banned', 'role:admin'])->prefix('admin')
 
     // Providers
     Route::resource('providers', \App\Http\Controllers\Admin\ProviderController::class)->except(['show']);
+    Route::post('/providers/{provider}/sync-balance', [\App\Http\Controllers\Admin\ProviderController::class, 'syncBalance'])->name('providers.sync-balance');
+    Route::get('/providers/{provider}/services', [\App\Http\Controllers\Admin\ProviderController::class, 'showServices'])->name('providers.services');
+    Route::post('/providers/{provider}/fetch-services', [\App\Http\Controllers\Admin\ProviderController::class, 'fetchServices'])->name('providers.fetch-services');
+    Route::post('/providers/{provider}/import-services', [\App\Http\Controllers\Admin\ProviderController::class, 'importServices'])->name('providers.import-services');
+    Route::post('/providers/{provider}/sync-services', [\App\Http\Controllers\Admin\ProviderController::class, 'syncServices'])->name('providers.sync-services');
 
     // Transactions
     Route::get('/transactions', [\App\Http\Controllers\Admin\TransactionController::class, 'index'])->name('transactions.index');

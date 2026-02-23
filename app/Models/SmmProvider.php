@@ -12,6 +12,7 @@ class SmmProvider extends Model
     protected $casts = [
         'is_active' => 'boolean',
         'balance' => 'decimal:4',
+        'last_synced_at' => 'datetime',
     ];
 
     public function services(): HasMany

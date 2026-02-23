@@ -103,6 +103,7 @@ Route::middleware(['auth', 'verified', 'banned'])->group(function () {
 // ── Admin Routes ──
 Route::middleware(['auth', 'verified', 'banned', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     // Dashboard
+    Route::get('/', fn () => redirect()->route('admin.dashboard'));
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
     // Users

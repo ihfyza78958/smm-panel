@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
     <!-- SEO Meta Tags -->
-    <title>Nepalboost - #1 Cheapest SMM Panel for Nepal & India | Buy Followers & Likes</title>
+    <title>NepalBoost - #1 Cheapest SMM Panel for Nepal & India | Buy Followers & Likes</title>
     <meta name="description" content="Best & Cheapest SMM Panel in Nepal and India. Buy Instagram followers, TikTok views, YouTube watchtime, with instant delivery via eSewa, Khalti, IME Pay, UPI & Paytm. Wholesale SMM services for resellers.">
     <meta name="keywords" content="nepalboost, smm panel nepal, smm panel india, cheapest smm panel india, buy instagram followers nepal, tiktok views nepal, youtube watchtime india, facebook likes, esewa smm panel, khalti payment, upi smm panel, paytm smm panel, social media marketing reseller">
-    <meta name="author" content="Nepalboost">
+    <meta name="author" content="NepalBoost">
     <meta name="robots" content="index, follow">
     
     <!-- Canonical -->
@@ -17,22 +17,22 @@
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ url('/') }}">
-    <meta property="og:title" content="Nepalboost - Best & Cheapest SMM Panel for Nepal and India">
-    <meta property="og:description" content="Boost your social media presence with Nepalboost. Cheapest rates for Instagram, TikTok, YouTube & Facebook. Instant delivery with local payments.">
-    <meta property="og:site_name" content="Nepalboost">
+    <meta property="og:title" content="NepalBoost - Best & Cheapest SMM Panel for Nepal and India">
+    <meta property="og:description" content="Boost your social media presence with NepalBoost. Cheapest rates for Instagram, TikTok, YouTube & Facebook. Instant delivery with local payments.">
+    <meta property="og:site_name" content="NepalBoost">
     <meta property="og:locale" content="en_US">
     
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Nepalboost - Best & Cheapest SMM Panel for Nepal and India">
-    <meta name="twitter:description" content="Boost your social media presence with Nepalboost. Cheapest rates for Instagram, TikTok, YouTube & Facebook. Instant delivery with local payments.">
+    <meta name="twitter:title" content="NepalBoost - Best & Cheapest SMM Panel for Nepal and India">
+    <meta name="twitter:description" content="Boost your social media presence with NepalBoost. Cheapest rates for Instagram, TikTok, YouTube & Facebook. Instant delivery with local payments.">
     
     <!-- JSON-LD Structured Data -->
     <script type="application/ld+json">
     {
         "@@context": "https://schema.org",
         "@@type": "WebSite",
-        "name": "Nepalboost",
+        "name": "NepalBoost",
         "url": "{{ url('/') }}",
         "description": "Best & Cheapest SMM Panel in Nepal and India",
         "potentialAction": {
@@ -46,7 +46,7 @@
     {
         "@@context": "https://schema.org",
         "@@type": "Organization",
-        "name": "Nepalboost",
+        "name": "NepalBoost",
         "url": "{{ url('/') }}",
         "description": "Best & Cheapest SMM Panel in Nepal and India. Buy Instagram followers, TikTok views, YouTube watchtime with instant delivery.",
         "sameAs": []
@@ -83,12 +83,15 @@
     <nav class="fixed w-full z-50 transition-all duration-300 bg-white/90 backdrop-blur-md border-b border-gray-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
-                <div class="flex items-center gap-2">
-                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center text-white font-bold text-2xl shadow-lg shadow-indigo-200">S</div>
-                    <a href="/" class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-700">
-                        <span class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-indigo-200">Nepalboost</span>
-                    </a>
-                </div>
+                <a href="/" class="flex items-center gap-2 group">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-200 group-hover:shadow-indigo-300 transition-all duration-300 group-hover:scale-105">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 4V20L8 12L12 20V4" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 4V20H18C20.2091 20 22 18.2091 22 16V16C22 13.7909 20.2091 12 18 12H14M14 12H18C20.2091 12 22 10.2091 22 8V8C22 5.79086 20.2091 4 18 4H14" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <div>
+                        <span class="text-xl font-extrabold tracking-tight text-gray-900">Nepal<span class="text-indigo-600">Boost</span></span>
+                        <span class="block text-[10px] font-semibold text-gray-400 uppercase tracking-[0.2em] -mt-0.5">SMM Panel</span>
+                    </div>
+                </a>
                 <div class="hidden md:flex space-x-8 items-center">
                     <a href="#services" class="text-gray-600 hover:text-indigo-600 font-medium transition">Services</a>
                     <a href="#api" class="text-gray-600 hover:text-indigo-600 font-medium transition">API</a>
@@ -223,7 +226,7 @@
                     <h2 class="text-3xl font-bold text-gray-900 mb-6">What is SMM Panel Nepal?</h2>
                     <div class="prose prose-indigo text-gray-600 leading-relaxed space-y-4">
                         <p class="text-lg text-gray-600 leading-relaxed mb-6">
-                            <strong>Nepalboost</strong> is an online social media marketing tool (SMM Panel) that allows individuals and businesses to buy likes, followers, and views for various social media platforms such as Instagram, Facebook, TikTok, YouTube, and Twitter.
+                            <strong>NepalBoost</strong> is an online social media marketing tool (SMM Panel) that allows individuals and businesses to buy likes, followers, and views for various social media platforms such as Instagram, Facebook, TikTok, YouTube, and Twitter.
                         </p>
                         <p class="text-lg text-gray-600 leading-relaxed">
                             We are known as the <span class="text-indigo-600 font-bold">Cheapest SMM Panel in Nepal</span> because we connect directly with main providers to offer wholesale rates. Whether you are an influencer looking to boost your reach or a brand trying to establish credibility, our services are designed to help you grow.
@@ -401,7 +404,7 @@
                 <div class="prose prose-indigo max-w-none text-gray-600">
                     <h2 class="text-3xl font-bold text-gray-900">Why choose us as your SMM Panel?</h2>
                     <p>
-                        Nepalboost is not just another panel; we are a dedicated team of marketing experts aiming to provide the <strong>cheapest and most effective social media marketing services</strong> in South Asia. Whether you are from Kathmandu, Delhi, Mumbai, or Pokhara, our services are tailored to boost your digital presence.
+                        NepalBoost is not just another panel; we are a dedicated team of marketing experts aiming to provide the <strong>cheapest and most effective social media marketing services</strong> in South Asia. Whether you are from Kathmandu, Delhi, Mumbai, or Pokhara, our services are tailored to boost your digital presence.
                     </p>
                     <p>
                         We understand the algorithm of Instagram, TikTok, and YouTube. Our views and likes are designed to help your content go viral. With over 5 years of experience, we have processed millions of orders for influencers, brands, and celebrities.
@@ -498,8 +501,10 @@
                 <!-- Brand -->
                 <div class="col-span-1 md:col-span-2">
                     <div class="flex items-center gap-2 mb-6">
-                         <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-indigo-900/20">S</div>
-                        <span class="text-2xl font-bold text-white">Nepalboost</span>
+                         <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-900/20">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 4V20L8 12L12 20V4" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 4V20H18C20.2091 20 22 18.2091 22 16V16C22 13.7909 20.2091 12 18 12H14M14 12H18C20.2091 12 22 10.2091 22 8V8C22 5.79086 20.2091 4 18 4H14" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                         </div>
+                        <span class="text-2xl font-bold text-white">Nepal<span class="text-indigo-400">Boost</span></span>
                     </div>
                     <p class="text-gray-400 text-sm leading-relaxed max-w-sm mb-6">
                         The trusted partner for influencers, brands, and agencies. We provide the cheapest and most reliable social media services in Nepal & India.
@@ -524,7 +529,7 @@
                 <div>
                     <h4 class="font-bold text-white mb-6 uppercase tracking-wider text-sm">Company</h4>
                     <ul class="space-y-4 text-sm text-gray-400">
-                        <li><a href="https://nepalboost.com" class="hover:text-indigo-400 transition">Nepalboost IT</a></li>
+                        <li><a href="https://nepalboost.com" class="hover:text-indigo-400 transition">NepalBoost IT</a></li>
                         <li><a href="#services" class="hover:text-indigo-400 transition">Our Services</a></li>
                         <li><a href="#blog" class="hover:text-indigo-400 transition">Blog / News</a></li>
                         <li><a href="https://nepalboost.com#contact" class="hover:text-indigo-400 transition">Contact Support</a></li>
@@ -544,7 +549,7 @@
             </div>
 
             <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-                <p class="text-gray-500 text-sm">&copy; {{ date('Y') }} Nepalboost. All rights reserved.</p>
+                <p class="text-gray-500 text-sm">&copy; {{ date('Y') }} NepalBoost. All rights reserved.</p>
                 <div class="flex items-center gap-2 text-sm text-gray-500">
                     <span>Made with</span>
                     <svg class="w-4 h-4 text-red-500 fill-current animate-pulse" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>

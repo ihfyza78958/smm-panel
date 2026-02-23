@@ -4,21 +4,21 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <title>Blog - Nepalboost | SMM Tips, Social Media Marketing Guides</title>
-    <meta name="description" content="Latest news, tips, and updates about social media marketing services from Nepalboost. Learn how to grow your Instagram, TikTok, YouTube & Facebook.">
+    <title>Blog - NepalBoost | SMM Tips, Social Media Marketing Guides</title>
+    <meta name="description" content="Latest news, tips, and updates about social media marketing services from NepalBoost. Learn how to grow your Instagram, TikTok, YouTube & Facebook.">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="{{ route('blog.index') }}">
     
     <!-- Open Graph -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ route('blog.index') }}">
-    <meta property="og:title" content="Blog - Nepalboost">
-    <meta property="og:description" content="Latest news, tips, and updates about social media marketing services from Nepalboost.">
-    <meta property="og:site_name" content="Nepalboost">
+    <meta property="og:title" content="Blog - NepalBoost">
+    <meta property="og:description" content="Latest news, tips, and updates about social media marketing services from NepalBoost.">
+    <meta property="og:site_name" content="NepalBoost">
     
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="Blog - Nepalboost">
+    <meta name="twitter:title" content="Blog - NepalBoost">
     <meta name="twitter:description" content="Latest SMM tips and social media marketing guides.">
     
     <!-- JSON-LD -->
@@ -26,12 +26,12 @@
     {
         "@@context": "https://schema.org",
         "@@type": "Blog",
-        "name": "Nepalboost Blog",
+        "name": "NepalBoost Blog",
         "url": "{{ route('blog.index') }}",
         "description": "Latest news, tips, and updates about social media marketing services",
         "publisher": {
             "@@type": "Organization",
-            "name": "Nepalboost",
+            "name": "NepalBoost",
             "url": "{{ url('/') }}"
         }
     }
@@ -55,7 +55,7 @@
                 <div class="flex items-center gap-2">
                     <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center text-white font-bold text-2xl shadow-lg shadow-indigo-200">S</div>
                     <a href="/" class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-700">
-                        Nepalboost
+                        NepalBoost
                     </a>
                 </div>
                 <div class="hidden md:flex space-x-8 items-center">
@@ -132,7 +132,7 @@
     <!-- Footer -->
     <footer class="bg-gray-900 text-gray-400 py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <p class="text-sm">&copy; {{ date('Y') }} Nepalboost. All rights reserved.</p>
+            <p class="text-sm">&copy; {{ date('Y') }} NepalBoost. All rights reserved.</p>
         </div>
     </footer>
 </body>

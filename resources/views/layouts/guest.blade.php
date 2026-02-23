@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Nepalboost - Authentication</title>
+    <title>NepalBoost - Authentication</title>
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,7 +19,7 @@
         <!-- Brand Header -->
         <div class="bg-gradient-to-r from-indigo-600 to-purple-700 p-8 text-center text-white">
             <a href="/">
-                <h1 class="text-3xl font-bold tracking-tight">Nepalboost</h1>
+                <h1 class="text-3xl font-bold tracking-tight">NepalBoost</h1>
             </a>
             <p class="text-indigo-200 text-sm mt-2">The #1 Social Media Marketing Panel</p>
         </div>
@@ -35,7 +35,7 @@
         <span class="mx-2">•</span>
         <a href="{{ route('page.terms') }}" class="hover:text-gray-900">Terms</a>
         <span class="mx-2">•</span>
-        <a href="https://nepalboost.com" class="hover:text-gray-900">Nepalboost IT</a>
+        <a href="https://nepalboost.com" class="hover:text-gray-900">NepalBoost IT</a>
     </div>
 
 </body>

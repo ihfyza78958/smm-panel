@@ -85,7 +85,7 @@
             <div class="flex justify-between h-20 items-center">
                 <a href="/" class="flex items-center gap-2 group">
                     <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-200 group-hover:shadow-indigo-300 transition-all duration-300 group-hover:scale-105">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 4V20L8 12L12 20V4" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 4V20H18C20.2091 20 22 18.2091 22 16V16C22 13.7909 20.2091 12 18 12H14M14 12H18C20.2091 12 22 10.2091 22 8V8C22 5.79086 20.2091 4 18 4H14" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 4V20L12 4V20" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 4V20H18C20.2091 20 22 18.2091 22 16V16C22 13.7909 20.2091 12 18 12H14M14 12H18C20.2091 12 22 10.2091 22 8V8C22 5.79086 20.2091 4 18 4H14" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                     </div>
                     <div>
                         <span class="text-xl font-extrabold tracking-tight text-gray-900">Nepal<span class="text-indigo-600">Boost</span></span>
@@ -502,7 +502,7 @@
                 <div class="col-span-1 md:col-span-2">
                     <div class="flex items-center gap-2 mb-6">
                          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-900/20">
-                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 4V20L8 12L12 20V4" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 4V20H18C20.2091 20 22 18.2091 22 16V16C22 13.7909 20.2091 12 18 12H14M14 12H18C20.2091 12 22 10.2091 22 8V8C22 5.79086 20.2091 4 18 4H14" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 4V20L12 4V20" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 4V20H18C20.2091 20 22 18.2091 22 16V16C22 13.7909 20.2091 12 18 12H14M14 12H18C20.2091 12 22 10.2091 22 8V8C22 5.79086 20.2091 4 18 4H14" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                          </div>
                         <span class="text-2xl font-bold text-white">Nepal<span class="text-indigo-400">Boost</span></span>
                     </div>

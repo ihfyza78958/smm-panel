@@ -119,7 +119,7 @@
                         <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-emerald-500 to-cyan-500 flex items-center justify-center shadow-lg shadow-emerald-200/50 group-hover:shadow-emerald-300/60 transition-all duration-300 group-hover:scale-105">
                             {{-- NB Monogram --}}
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                <path d="M4 4V20L8 12L12 20V4" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M4 4V20L12 4V20" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
                                 <path d="M14 4V20H18C20.2091 20 22 18.2091 22 16V16C22 13.7909 20.2091 12 18 12H14M14 12H18C20.2091 12 22 10.2091 22 8V8C22 5.79086 20.2091 4 18 4H14" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                         </div>
@@ -745,7 +745,7 @@
                             <div class="flex items-center gap-3 mb-8">
                                 <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-500 to-cyan-500 flex items-center justify-center shadow-lg">
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                        <path d="M4 4V20L8 12L12 20V4" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M4 4V20L12 4V20" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
                                         <path d="M14 4V20H18C20.2091 20 22 18.2091 22 16V16C22 13.7909 20.2091 12 18 12H14M14 12H18C20.2091 12 22 10.2091 22 8V8C22 5.79086 20.2091 4 18 4H14" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
                                     </svg>
                                 </div>
@@ -901,7 +901,7 @@
                     <a href="/" class="flex items-center gap-3 mb-6 group">
                         <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-emerald-500 to-cyan-500 flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                <path d="M4 4V20L8 12L12 20V4" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M4 4V20L12 4V20" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
                                 <path d="M14 4V20H18C20.2091 20 22 18.2091 22 16V16C22 13.7909 20.2091 12 18 12H14M14 12H18C20.2091 12 22 10.2091 22 8V8C22 5.79086 20.2091 4 18 4H14" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                         </div>

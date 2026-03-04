@@ -182,7 +182,16 @@ Route::middleware(['auth', 'verified', 'banned', 'role:admin'])->prefix('admin')
 });
 
 // Social Auth
-Route::get('/auth/google', [\App\Http\Controllers\Auth\GoogleAuthController::class, 'redirectToGoogle'])->name('auth.google');
-Route::get('/auth/google/callback', [\App\Http\Controllers\Auth\GoogleAuthController::class, 'handleGoogleCallback']);
+// Social Login (Google, GitHub, Facebook)
+Route::get('/auth/{provider}', [\App\Http\Controllers\Auth\SocialAuthController::class, 'redirect'])
+    ->name('auth.social')
+    ->where('provider', 'google|github|facebook');
+Route::get('/auth/{provider}/callback', [\App\Http\Controllers\Auth\SocialAuthController::class, 'callback'])
+    ->name('auth.social.callback')
+    ->where('provider', 'google|github|facebook');
+// Legacy google route alias
+Route::get('/auth/google', [\App\Http\Controllers\Auth\SocialAuthController::class, 'redirect'])
+    ->defaults('provider', 'google')
+    ->name('auth.google');
 
 require __DIR__.'/auth.php';

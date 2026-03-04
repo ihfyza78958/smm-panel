@@ -40,6 +40,16 @@ class SettingController extends Controller
             'referral_enabled'      => ['nullable',                    'referral'],
             'referral_percentage'   => ['nullable|numeric|min:0|max:100', 'referral'],
             'referral_min_payout'   => ['nullable|numeric|min:0',      'referral'],
+            // social login
+            'google_login_enabled'   => ['nullable',          'social'],
+            'google_client_id'       => ['nullable|string',   'social'],
+            'google_client_secret'   => ['nullable|string',   'social'],
+            'github_login_enabled'   => ['nullable',          'social'],
+            'github_client_id'       => ['nullable|string',   'social'],
+            'github_client_secret'   => ['nullable|string',   'social'],
+            'facebook_login_enabled' => ['nullable',          'social'],
+            'facebook_client_id'     => ['nullable|string',   'social'],
+            'facebook_client_secret' => ['nullable|string',   'social'],
         ];
 
         $rules = array_map(fn($v) => $v[0], $allSettings);

@@ -28,6 +28,8 @@ class User extends Authenticatable
         'timezone',
         'is_banned',
         'google_id',
+        'github_id',
+        'facebook_id',
         'ref_code',
         'ref_by',
         'spent',

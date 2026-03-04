@@ -1,7 +1,7 @@
 <x-admin-layout>
     <x-slot name="header">Provider Services</x-slot>
 
-    <div x-data="providerServices()" x-init="fetchServices()" class="space-y-6">
+    <div x-data="providerServices" x-init="fetchServices()" class="space-y-6">
         <!-- Header -->
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
@@ -241,8 +241,8 @@
 
     @push('scripts')
     <script>
-    function providerServices() {
-        return {
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('providerServices', () => ({
             loading: false,
             fetched: false,
             importing: false,
@@ -464,8 +464,8 @@
                     this.syncing = false;
                 }
             },
-        };
-    }
+        }));
+    });
     </script>
     @endpush
 </x-admin-layout>

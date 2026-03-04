@@ -17,11 +17,14 @@
     
     <div class="w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden">
         <!-- Brand Header -->
-        <div class="bg-gradient-to-r from-indigo-600 to-purple-700 p-8 text-center text-white">
-            <a href="/">
+        <div class="bg-gradient-to-br from-emerald-500 to-cyan-600 p-8 text-center text-white">
+            <a href="/" class="inline-flex items-center justify-center gap-2">
+                <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
+                    <svg viewBox="0 0 16 24" class="w-5 h-6" fill="white"><path d="M4 4V20L12 4V20"/></svg>
+                </div>
                 <h1 class="text-3xl font-bold tracking-tight">NepalBoost</h1>
             </a>
-            <p class="text-indigo-200 text-sm mt-2">The #1 Social Media Marketing Panel</p>
+            <p class="text-emerald-100 text-sm mt-2">Nepal's #1 Social Media Marketing Panel</p>
         </div>
 
         <div class="p-8">

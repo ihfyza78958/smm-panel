@@ -11,85 +11,49 @@ class SettingController extends Controller
 {
     public function index()
     {
-        $settings = [
-            'general' => Setting::getGroup('general'),
-            'seo' => Setting::getGroup('seo'),
-            'mail' => Setting::getGroup('mail'),
-            'payment' => Setting::getGroup('payment'),
-            'referral' => Setting::getGroup('referral'),
-            'modules' => Setting::getGroup('modules'),
-        ];
+        // Flatten all setting groups into one key→value array so the view can
+        // access settings directly as $settings['site_name'] etc.
+        $settings = Setting::pluck('value', 'key')->toArray();
 
         return view('admin.settings.index', compact('settings'));
     }
 
     public function store(Request $request)
     {
-        $group = $request->input('group', 'general');
-
-        $settingsMap = [
-            'general' => [
-                'site_name' => 'required|string|max:255',
-                'site_description' => 'nullable|string|max:500',
-                'site_url' => 'nullable|url',
-                'currency' => 'nullable|string|max:5',
-                'maintenance_mode' => 'nullable|boolean',
-                'registration_enabled' => 'nullable|boolean',
-                'free_balance' => 'nullable|numeric|min:0',
-                'email_confirmation' => 'nullable|boolean',
-            ],
-            'seo' => [
-                'seo_title' => 'nullable|string|max:255',
-                'seo_keywords' => 'nullable|string',
-                'seo_description' => 'nullable|string|max:500',
-            ],
-            'mail' => [
-                'smtp_host' => 'nullable|string',
-                'smtp_port' => 'nullable|integer',
-                'smtp_user' => 'nullable|string',
-                'smtp_password' => 'nullable|string',
-                'smtp_encryption' => 'nullable|in:ssl,tls,null',
-                'mail_from_name' => 'nullable|string',
-                'mail_from_address' => 'nullable|email',
-            ],
-            'payment' => [
-                'esewa_enabled' => 'nullable|boolean',
-                'khalti_enabled' => 'nullable|boolean',
-                'manual_payment_enabled' => 'nullable|boolean',
-                'min_deposit' => 'nullable|numeric|min:0',
-                'max_deposit' => 'nullable|numeric|min:0',
-            ],
-            'referral' => [
-                'referral_enabled' => 'nullable|boolean',
-                'referral_commission_percent' => 'nullable|numeric|min:0|max:100',
-                'referral_min_payout' => 'nullable|numeric|min:0',
-            ],
-            'modules' => [
-                'ticket_system' => 'nullable|boolean',
-                'mass_order' => 'nullable|boolean',
-                'coupon_system' => 'nullable|boolean',
-                'blog_enabled' => 'nullable|boolean',
-                'faq_enabled' => 'nullable|boolean',
-                'api_enabled' => 'nullable|boolean',
-            ],
+        // All editable setting keys with their validation rules and group.
+        $allSettings = [
+            // general
+            'site_name'             => ['required|string|max:255',     'general'],
+            'site_description'      => ['nullable|string|max:500',     'general'],
+            'currency_symbol'       => ['nullable|string|max:5',       'general'],
+            'support_email'         => ['nullable|email',              'general'],
+            'meta_description'      => ['nullable|string|max:500',     'general'],
+            'maintenance_mode'      => ['nullable',                    'general'],
+            'global_profit_margin'  => ['nullable|numeric|min:0',      'general'],
+            // payment
+            'min_deposit'           => ['nullable|numeric|min:0',      'payment'],
+            'max_deposit'           => ['nullable|numeric|min:0',      'payment'],
+            'esewa_enabled'         => ['nullable',                    'payment'],
+            'khalti_enabled'        => ['nullable',                    'payment'],
+            'manual_topup_enabled'  => ['nullable',                    'payment'],
+            // referral
+            'referral_enabled'      => ['nullable',                    'referral'],
+            'referral_percentage'   => ['nullable|numeric|min:0|max:100', 'referral'],
+            'referral_min_payout'   => ['nullable|numeric|min:0',      'referral'],
         ];
 
-        $rules = $settingsMap[$group] ?? [];
-        if (!empty($rules)) {
-            $request->validate($rules);
+        $rules = array_map(fn($v) => $v[0], $allSettings);
+        $request->validate($rules);
+
+        foreach ($allSettings as $key => [$rule, $group]) {
+            // Checkboxes are absent when unchecked — treat missing as '0'
+            $value = $request->has($key) ? $request->input($key) : '0';
+            Setting::set($key, $value, $group);
         }
 
-        // Save all submitted settings for this group
-        foreach (array_keys($rules) as $key) {
-            $value = $request->input($key);
-            if ($value !== null) {
-                Setting::set($key, $value, $group);
-            }
-        }
+        ActivityLog::log('settings_updated', 'Site settings updated');
 
-        ActivityLog::log('settings_updated', "Settings group '{$group}' updated");
-
-        return redirect()->back()->with('success', ucfirst($group) . ' settings saved successfully.');
+        return redirect()->back()->with('success', 'Settings saved successfully.');
     }
 
     /**

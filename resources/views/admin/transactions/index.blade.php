@@ -78,7 +78,15 @@
                             NPR {{ number_format($tx->amount, 2) }}
                         </td>
                         <td class="px-6 py-4 text-center">
-                            <span class="px-2 py-1 rounded text-xs font-semibold {{ $tx->status == 'completed' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700' }}">
+                            @php
+                                $txBadge = match($tx->status) {
+                                    'completed' => 'bg-green-100 text-green-700',
+                                    'failed', 'rejected' => 'bg-red-100 text-red-700',
+                                    'review' => 'bg-blue-100 text-blue-700',
+                                    default => 'bg-yellow-100 text-yellow-700',
+                                };
+                            @endphp
+                            <span class="px-2 py-1 rounded text-xs font-semibold {{ $txBadge }}">
                                 {{ ucfirst($tx->status) }}
                             </span>
                         </td>

@@ -15,11 +15,33 @@ class OrderController extends Controller
 {
     public function index()
     {
-        $categories = Category::with(['services' => function($q) {
-            $q->where('is_active', true)->orderBy('sort_order');
-        }])->where('is_active', true)->orderBy('sort_order')->get();
+        $categories = Category::where('is_active', true)
+            ->whereHas('services', fn($q) => $q->where('is_active', true))
+            ->orderBy('sort_order')
+            ->get(['id', 'name']);
 
         return view('user.orders.new', compact('categories'));
+    }
+
+    /**
+     * Return services for a given category as JSON (used by the order form via fetch).
+     */
+    public function categoryServices(Category $category)
+    {
+        $services = $category->services()
+            ->where('is_active', true)
+            ->orderBy('sort_order')
+            ->get(['id', 'name', 'price', 'min_quantity', 'max_quantity', 'description'])
+            ->map(fn($s) => [
+                'id'    => $s->id,
+                'name'  => $s->name,
+                'price' => (float) $s->price,
+                'min'   => $s->min_quantity,
+                'max'   => $s->max_quantity,
+                'desc'  => $s->description ?? '',
+            ]);
+
+        return response()->json($services);
     }
 
     public function history(Request $request)
@@ -46,8 +68,8 @@ class OrderController extends Controller
     {
         $request->validate([
             'service_id' => 'required|exists:services,id',
-            'link' => 'required|url',
-            'quantity' => 'required|integer|min:1',
+            'link'       => 'required|string|max:500',
+            'quantity'   => 'required|integer|min:1',
         ]);
 
         $service = Service::findOrFail($request->service_id);

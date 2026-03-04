@@ -58,6 +58,7 @@ Route::middleware(['auth', 'verified', 'banned'])->group(function () {
 
     // Orders
     Route::get('/orders/new', [OrderController::class, 'index'])->name('orders.new');
+    Route::get('/orders/services/{category}', [OrderController::class, 'categoryServices'])->name('orders.category-services');
     Route::post('/orders/store', [OrderController::class, 'store'])->name('orders.store');
     Route::get('/orders/history', [OrderController::class, 'history'])->name('orders.history');
     Route::post('/orders/{order}/refill', [OrderController::class, 'refill'])->name('orders.refill');

@@ -1,11 +1,13 @@
 <x-guest-layout>
     <div class="mb-8 text-center">
         <a href="/" class="inline-flex items-center gap-2 mb-6">
-            <span class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-600 to-violet-600 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-indigo-200">S</span>
-            <span class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-700">Nepalboost</span>
+            <span class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-400 to-cyan-500 flex items-center justify-center shadow-lg shadow-emerald-200">
+                <svg viewBox="0 0 16 24" class="w-5 h-6" fill="white"><path d="M4 4V20L12 4V20"/></svg>
+            </span>
+            <span class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-700">NepalBoost</span>
         </a>
         <h2 class="text-2xl font-bold text-gray-900">Create Account</h2>
-        <p class="mt-2 text-sm text-gray-600">Join the #1 SMM Panel in Nepal today</p>
+        <p class="mt-2 text-sm text-gray-600">Join Nepal's #1 SMM Panel today</p>
     </div>
 
     <form method="POST" action="{{ route('register') }}" class="space-y-6">

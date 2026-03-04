@@ -28,7 +28,7 @@
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
                 </button>
                 <div class="flex flex-col">
-                    <span class="font-bold text-lg leading-tight bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600">NepalBoost</span>
+                    <span class="font-bold text-lg leading-tight bg-clip-text text-transparent bg-gradient-to-r from-emerald-500 to-cyan-600">NepalBoost</span>
                 </div>
             </div>
             <div class="flex items-center gap-3">
@@ -45,8 +45,10 @@
         <!-- Logo -->
         <div class="h-16 flex items-center px-6 border-b border-gray-100 bg-white">
             <a href="{{ route('dashboard') }}" class="flex items-center gap-2 group">
-                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center text-white font-bold text-xl shadow-md group-hover:scale-110 transition-transform">S</div>
-                <span class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-800 to-gray-600 group-hover:from-indigo-600 group-hover:to-purple-600 transition-all">NepalBoost</span>
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-400 to-cyan-500 flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
+                    <svg viewBox="0 0 16 24" class="w-4 h-5" fill="white"><path d="M4 4V20L12 4V20"/></svg>
+                </div>
+                <span class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-800 to-gray-600 group-hover:from-emerald-500 group-hover:to-cyan-500 transition-all">NepalBoost</span>
             </a>
         </div>
 
@@ -56,6 +58,7 @@
             <x-nav-link href="{{ route('orders.new') }}" :active="request()->routeIs('orders.new')" icon="plus-circle">New Order</x-nav-link>
             <x-nav-link href="{{ route('orders.mass') }}" :active="request()->routeIs('orders.mass')" icon="layers">Mass Order</x-nav-link>
             <x-nav-link href="{{ route('orders.history') }}" :active="request()->routeIs('orders.history')" icon="shopping-bag">Orders</x-nav-link>
+            <x-nav-link href="{{ route('guest.services') }}" :active="request()->routeIs('guest.services')" icon="grid">Services</x-nav-link>
             <x-nav-link href="{{ route('wallet.index') }}" :active="request()->routeIs('wallet.index')" icon="credit-card">Add Funds</x-nav-link>
             <x-nav-link href="{{ route('tickets.index') }}" :active="request()->routeIs('tickets.*')" icon="life-buoy">Support</x-nav-link>
             <x-nav-link href="{{ route('profile.edit') }}" :active="request()->routeIs('profile.edit')" icon="user">Profile & API</x-nav-link>

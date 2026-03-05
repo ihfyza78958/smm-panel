@@ -36,6 +36,12 @@
                         <option value="NPR">NPR</option>
                     </select>
                 </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Conversion Rate to Local Price</label>
+                    <input type="number" name="conversion_rate" value="1" step="0.000001" min="0.000001" class="w-full rounded-lg border-gray-300 focus:ring-indigo-500 focus:border-indigo-500">
+                    <p class="text-xs text-gray-500 mt-1">Example: if provider is USD and your local pricing is NPR, set USD→NPR rate here (e.g. 133.50).</p>
+                </div>
             </div>
 
             <div class="mt-6 flex justify-end">

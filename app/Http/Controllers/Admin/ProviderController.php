@@ -31,6 +31,7 @@ class ProviderController extends Controller
             'url' => 'required|url',
             'api_key' => 'required|string',
             'currency' => 'required|string|max:3',
+            'conversion_rate' => 'required|numeric|min:0.000001',
         ]);
 
         try {
@@ -58,11 +59,17 @@ class ProviderController extends Controller
 
     public function update(Request $request, SmmProvider $provider)
     {
+        $oldConversionRate = (float) ($provider->conversion_rate ?? 1);
+        if ($oldConversionRate <= 0) {
+            $oldConversionRate = 1;
+        }
+
         $validated = $request->validate([
             'domain' => 'required|string|max:255',
             'url' => 'required|url',
             'api_key' => 'required|string',
             'currency' => 'required|string|max:3',
+            'conversion_rate' => 'required|numeric|min:0.000001',
             'is_active' => 'boolean',
         ]);
 
@@ -76,9 +83,43 @@ class ProviderController extends Controller
         }
 
         $provider->update($validated);
+
+        // If conversion rate changed, immediately rescale existing services so
+        // user-facing prices stay in local currency (e.g., NPR).
+        $newConversionRate = (float) ($validated['conversion_rate'] ?? 1);
+        if ($newConversionRate <= 0) {
+            $newConversionRate = 1;
+        }
+
+        $rescaledServices = 0;
+        if ($oldConversionRate !== $newConversionRate) {
+            $ratio = $newConversionRate / $oldConversionRate;
+
+            Service::where('smm_provider_id', $provider->id)
+                ->whereNotNull('provider_rate')
+                ->chunkById(200, function ($services) use ($ratio, &$rescaledServices) {
+                    foreach ($services as $service) {
+                        $newProviderRate = round(((float) $service->provider_rate) * $ratio, 6);
+                        $newPrice = round(((float) $service->price) * $ratio, 4);
+
+                        $service->update([
+                            'provider_rate' => $newProviderRate,
+                            'price' => $newPrice,
+                        ]);
+
+                        $rescaledServices++;
+                    }
+                });
+        }
+
         ActivityLog::log('provider_updated', "Provider {$provider->domain} updated");
 
-        return redirect()->route('admin.providers.index')->with('success', 'Provider updated successfully.');
+        $message = 'Provider updated successfully.';
+        if (!empty($rescaledServices)) {
+            $message .= " {$rescaledServices} services were recalculated with the new conversion rate.";
+        }
+
+        return redirect()->route('admin.providers.index')->with('success', $message);
     }
 
     public function destroy(SmmProvider $provider)
@@ -165,11 +206,14 @@ class ProviderController extends Controller
                 }
 
                 $local = $localServices[$serviceId] ?? null;
+                $remoteRate = (float) ($svc['rate'] ?? 0);
+                $convertedRemoteRate = $this->convertRate($provider, $remoteRate);
                 $svc['is_imported'] = in_array($serviceId, $importedIds);
                 $svc['local_price'] = $local ? $local->price : null;
                 $svc['local_provider_rate'] = $local ? $local->provider_rate : null;
                 $svc['local_id'] = $local ? $local->id : null;
-                $svc['price_changed'] = $local && (float) $local->provider_rate !== (float) $svc['rate'];
+                $svc['converted_rate'] = $convertedRemoteRate;
+                $svc['price_changed'] = $local && (float) $local->provider_rate !== $convertedRemoteRate;
 
                 $organized[$category][] = $svc;
             }
@@ -242,7 +286,8 @@ class ProviderController extends Controller
                 }
 
                 $rate = (float) $svc['rate'];
-                $price = round($rate * (1 + $margin), 4);
+                $convertedRate = $this->convertRate($provider, $rate);
+                $price = round($convertedRate * (1 + $margin), 4);
 
                 // Map type
                 $type = 'default';
@@ -266,7 +311,7 @@ class ProviderController extends Controller
                     'max_quantity' => (int) $svc['max'],
                     'smm_provider_id' => $provider->id,
                     'provider_service_id' => $serviceId,
-                    'provider_rate' => $rate,
+                    'provider_rate' => $convertedRate,
                     'is_active' => true,
                     'drip_feed_active' => (bool) ($svc['dripfeed'] ?? false),
                     'refill_available' => (bool) ($svc['refill'] ?? false),
@@ -342,12 +387,13 @@ class ProviderController extends Controller
 
                 $changes = [];
                 $remoteRate = (float) $remote['rate'];
+                $convertedRemoteRate = $this->convertRate($provider, $remoteRate);
 
-                if ((float) $local->provider_rate !== $remoteRate) {
-                    $changes['provider_rate'] = $remoteRate;
+                if ((float) $local->provider_rate !== $convertedRemoteRate) {
+                    $changes['provider_rate'] = $convertedRemoteRate;
                     // Recalculate price using current margin
                     $margin = ($local->profit_margin ?? 20) / 100;
-                    $changes['price'] = round($remoteRate * (1 + $margin), 4);
+                    $changes['price'] = round($convertedRemoteRate * (1 + $margin), 4);
                 }
 
                 if ((int) $local->min_quantity !== (int) $remote['min']) {
@@ -399,5 +445,15 @@ class ProviderController extends Controller
             DB::rollBack();
             return response()->json(['error' => $e->getMessage()], 500);
         }
+    }
+
+    private function convertRate(SmmProvider $provider, float $rate): float
+    {
+        $conversionRate = (float) ($provider->conversion_rate ?? 1);
+        if ($conversionRate <= 0) {
+            $conversionRate = 1;
+        }
+
+        return round($rate * $conversionRate, 6);
     }
 }

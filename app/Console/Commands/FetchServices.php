@@ -53,7 +53,12 @@ class FetchServices extends Command
                     // Rate logic: Provider Rate * Multiplier? For now, keep price = rate (or add markup later)
                     // Usually we set price > provider_rate. Let's set a default markup of 20% if new.
                     
-                    $providerRate = $serviceData['rate'];
+                    $providerRate = (float) $serviceData['rate'];
+                    $conversionRate = (float) ($provider->conversion_rate ?? 1);
+                    if ($conversionRate <= 0) {
+                        $conversionRate = 1;
+                    }
+                    $providerRate = round($providerRate * $conversionRate, 6);
                     
                     // Auto markup: Apply profit margin (default 20%)
                     $existingService = Service::where('smm_provider_id', $provider->id)

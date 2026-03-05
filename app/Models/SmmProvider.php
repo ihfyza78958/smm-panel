@@ -12,6 +12,7 @@ class SmmProvider extends Model
     protected $casts = [
         'is_active' => 'boolean',
         'balance' => 'decimal:4',
+        'conversion_rate' => 'decimal:6',
         'last_synced_at' => 'datetime',
     ];
 

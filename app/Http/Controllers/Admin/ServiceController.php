@@ -137,7 +137,7 @@ class ServiceController extends Controller
             'category_id' => 'nullable|exists:categories,id',
         ]);
 
-        $query = Service::whereNotNull('provider_rate');
+        $query = Service::with('provider')->whereNotNull('provider_rate');
         if ($request->filled('category_id')) {
             $query->where('category_id', $request->category_id);
         }
@@ -147,7 +147,8 @@ class ServiceController extends Controller
 
         $query->chunk(100, function ($services) use ($margin, &$updated) {
             foreach ($services as $service) {
-                $newPrice = $service->provider_rate * (1 + $margin);
+                $baseRate = (float) $service->provider_rate;
+                $newPrice = $baseRate * (1 + $margin);
                 $service->update([
                     'price' => round($newPrice, 4),
                     'profit_margin' => $margin * 100,

@@ -34,6 +34,10 @@
                     <span class="font-bold text-gray-900">{{ number_format($provider->balance, 2) }} {{ $provider->currency }}</span>
                 </div>
                 <div class="flex justify-between text-sm">
+                    <span class="text-gray-500">Conversion</span>
+                    <span class="font-semibold text-gray-700">× {{ number_format((float) ($provider->conversion_rate ?? 1), 6) }}</span>
+                </div>
+                <div class="flex justify-between text-sm">
                     <span class="text-gray-500">API Key</span>
                     <span class="font-mono text-gray-600 bg-gray-50 px-2 rounded">••••{{ substr($provider->api_key, -4) }}</span>
                 </div>

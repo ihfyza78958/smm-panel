@@ -34,7 +34,7 @@
                     <input type="text" name="api_key" value="{{ $provider->api_key }}" required class="w-full rounded-lg border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 font-mono">
                 </div>
 
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Currency</label>
                         <select name="currency" class="w-full rounded-lg border-gray-300 focus:ring-indigo-500 focus:border-indigo-500">
@@ -43,7 +43,14 @@
                             <option value="NPR" {{ $provider->currency == 'NPR' ? 'selected' : '' }}>NPR</option>
                         </select>
                     </div>
-                     <div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Conversion Rate to Local Price</label>
+                        <input type="number" name="conversion_rate" value="{{ $provider->conversion_rate ?? 1 }}" step="0.000001" min="0.000001" class="w-full rounded-lg border-gray-300 focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
                         <select name="is_active" class="w-full rounded-lg border-gray-300 focus:ring-indigo-500 focus:border-indigo-500">
                             <option value="1" {{ $provider->is_active ? 'selected' : '' }}>Active</option>

@@ -10,3 +10,4 @@ Artisan::command('inspire', function () {
 
 // Schedule Provider Sync
 Schedule::command('smm:sync-orders')->everyMinute();
+Schedule::command('providers:sync-currency-rates')->dailyAt('00:10');

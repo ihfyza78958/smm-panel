@@ -136,6 +136,7 @@ Route::middleware(['auth', 'verified', 'banned', 'role:admin'])->prefix('admin')
 
     // Providers
     Route::resource('providers', \App\Http\Controllers\Admin\ProviderController::class)->except(['show']);
+    Route::post('/providers/update-market-rates', [\App\Http\Controllers\Admin\ProviderController::class, 'updateMarketRates'])->name('providers.update-market-rates');
     Route::post('/providers/{provider}/sync-balance', [\App\Http\Controllers\Admin\ProviderController::class, 'syncBalance'])->name('providers.sync-balance');
     Route::get('/providers/{provider}/services', [\App\Http\Controllers\Admin\ProviderController::class, 'showServices'])->name('providers.services');
     Route::post('/providers/{provider}/fetch-services', [\App\Http\Controllers\Admin\ProviderController::class, 'fetchServices'])->name('providers.fetch-services');

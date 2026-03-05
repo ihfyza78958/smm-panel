@@ -1,10 +1,19 @@
 <x-admin-layout>
     <div class="flex justify-between items-center mb-6">
         <h2 class="text-2xl font-bold text-gray-800">API Providers Management</h2>
-        <a href="{{ route('admin.providers.create') }}" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition flex items-center gap-2">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-            Add Provider
-        </a>
+        <div class="flex items-center gap-2">
+            <form method="POST" action="{{ route('admin.providers.update-market-rates') }}">
+                @csrf
+                <button type="submit" class="bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 transition flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h4l3-7 4 18 3-7h4"></path></svg>
+                    Update FX Rates
+                </button>
+            </form>
+            <a href="{{ route('admin.providers.create') }}" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition flex items-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                Add Provider
+            </a>
+        </div>
     </div>
 
     @if(session('success'))

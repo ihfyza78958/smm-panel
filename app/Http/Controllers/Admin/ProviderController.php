@@ -6,10 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Models\SmmProvider;
 use App\Models\Service;
 use App\Models\Category;
+use App\Models\Setting;
 use App\Models\ActivityLog;
 use App\Services\Smm\JapLikeProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 
 class ProviderController extends Controller
 {
@@ -145,6 +147,141 @@ class ProviderController extends Controller
         } catch (\Exception $e) {
             return back()->with('error', "Failed to fetch balance: {$e->getMessage()}");
         }
+    }
+
+    /**
+     * Update provider conversion rates from live FX market.
+     */
+    public function updateMarketRates()
+    {
+        $localCurrency = strtoupper((string) Setting::get('currency_symbol', 'NPR'));
+        if (!preg_match('/^[A-Z]{3}$/', $localCurrency)) {
+            $localCurrency = 'NPR';
+        }
+
+        $providers = SmmProvider::whereNotNull('currency')->get();
+        if ($providers->isEmpty()) {
+            return back()->with('error', 'No providers found to update conversion rates.');
+        }
+
+        $currencies = $providers->pluck('currency')
+            ->map(fn ($c) => strtoupper((string) $c))
+            ->filter(fn ($c) => preg_match('/^[A-Z]{3}$/', $c))
+            ->unique()
+            ->values();
+
+        $ratesToLocal = [];
+        $failedCurrencies = [];
+
+        foreach ($currencies as $currency) {
+            if ($currency === $localCurrency) {
+                $ratesToLocal[$currency] = 1.0;
+                continue;
+            }
+
+            $rate = $this->fetchRateToLocal($currency, $localCurrency);
+            if ($rate === null || $rate <= 0) {
+                $failedCurrencies[] = $currency;
+                continue;
+            }
+
+            $ratesToLocal[$currency] = $rate;
+        }
+
+        $updated = 0;
+        $rescaledServices = 0;
+        DB::beginTransaction();
+        try {
+            foreach ($providers as $provider) {
+                $providerCurrency = strtoupper((string) $provider->currency);
+                if (!isset($ratesToLocal[$providerCurrency])) {
+                    continue;
+                }
+
+                $oldConversionRate = (float) ($provider->conversion_rate ?? 1);
+                if ($oldConversionRate <= 0) {
+                    $oldConversionRate = 1;
+                }
+
+                $newConversionRate = (float) $ratesToLocal[$providerCurrency];
+                if ($newConversionRate <= 0) {
+                    continue;
+                }
+
+                $provider->update([
+                    'conversion_rate' => round($newConversionRate, 6),
+                ]);
+
+                if ($oldConversionRate !== $newConversionRate) {
+                    $ratio = $newConversionRate / $oldConversionRate;
+
+                    Service::where('smm_provider_id', $provider->id)
+                        ->whereNotNull('provider_rate')
+                        ->chunkById(200, function ($services) use ($ratio, &$rescaledServices) {
+                            foreach ($services as $service) {
+                                $service->update([
+                                    'provider_rate' => round(((float) $service->provider_rate) * $ratio, 6),
+                                    'price' => round(((float) $service->price) * $ratio, 4),
+                                ]);
+                                $rescaledServices++;
+                            }
+                        });
+                }
+
+                $updated++;
+            }
+
+            DB::commit();
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            return back()->with('error', 'Failed to update market rates: ' . $e->getMessage());
+        }
+
+        ActivityLog::log('provider_rates_updated', "Updated {$updated} provider conversion rates to {$localCurrency}");
+
+        $message = "Updated {$updated} provider conversion rates using live market data ({$localCurrency} target).";
+        if ($rescaledServices > 0) {
+            $message .= " Recalculated {$rescaledServices} services.";
+        }
+        if (!empty($failedCurrencies)) {
+            $message .= ' Could not fetch: ' . implode(', ', array_unique($failedCurrencies)) . '.';
+        }
+
+        return back()->with('success', $message);
+    }
+
+    private function fetchRateToLocal(string $base, string $target): ?float
+    {
+        try {
+            /** @var \Illuminate\Http\Client\Response $res */
+            $res = Http::timeout(10)->get('https://open.er-api.com/v6/latest/' . $base);
+            if ($res->status() >= 200 && $res->status() < 300) {
+                $data = json_decode((string) $res->body(), true);
+                $rate = data_get($data, 'rates.' . $target);
+                if (is_numeric($rate) && (float) $rate > 0) {
+                    return (float) $rate;
+                }
+            }
+        } catch (\Throwable $e) {
+        }
+
+        try {
+            /** @var \Illuminate\Http\Client\Response $res */
+            $res = Http::timeout(10)->get('https://api.exchangerate.host/latest', [
+                'base' => $base,
+                'symbols' => $target,
+            ]);
+            if ($res->status() >= 200 && $res->status() < 300) {
+                $data = json_decode((string) $res->body(), true);
+                $rate = data_get($data, 'rates.' . $target);
+                if (is_numeric($rate) && (float) $rate > 0) {
+                    return (float) $rate;
+                }
+            }
+        } catch (\Throwable $e) {
+        }
+
+        return null;
     }
 
     /**

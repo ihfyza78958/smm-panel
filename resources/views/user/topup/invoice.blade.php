@@ -118,7 +118,13 @@
                 <div class="md:col-span-1 mt-8 md:mt-0">
                     <div class="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-t-2xl p-6 text-white text-center shadow-lg">
                         <div class="text-sm opacity-80 uppercase tracking-wide font-bold">Total Due</div>
-                        <div class="text-4xl font-extrabold mt-2 tracking-tight">Rs. {{ number_format($transaction->amount, 2) }}</div>
+                        <div class="text-4xl font-extrabold mt-2 tracking-tight">
+                            @if($transaction->amount > 0)
+                                Rs. {{ number_format($transaction->amount, 2) }}
+                            @else
+                                <span class="text-2xl text-indigo-200">Amount Pending</span>
+                            @endif
+                        </div>
                     </div>
                     <div class="bg-white p-6 shadow-xl border border-gray-100 border-t-0 rounded-b-2xl space-y-4">
                         <div class="flex justify-between text-sm py-3 border-b border-dashed border-gray-200">
@@ -167,6 +173,20 @@
                                     <!-- Simplified Payment Method -->
                                     <input type="hidden" name="payment_method" value="manual">
                                     
+                                    @if($transaction->amount <= 0)
+                                    <div>
+                                        <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Amount Paid (NPR) <span class="text-red-500">*</span></label>
+                                        <div class="relative">
+                                            <input type="number" name="amount" required min="10" 
+                                                class="w-full rounded-lg border-gray-300 text-sm focus:ring-indigo-500 focus:border-indigo-500 pl-10 py-2.5" 
+                                                placeholder="e.g. 500">
+                                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400 font-bold">
+                                                रु
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @endif
+
                                     <div>
                                         <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Enter Transaction Code <span class="text-red-500">*</span></label>
                                         <div class="relative">

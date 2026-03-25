@@ -26,15 +26,10 @@
                 </div>
 
                 <div x-show="open" class="mt-4 pt-4 border-t border-gray-100" x-transition style="display: none;">
-                    <form action="{{ route('user.topup.store') }}" method="POST">
-                        @csrf
-                        <input type="hidden" name="payment_method" value="manual">
-                        <input type="hidden" name="amount" value="0">
-                        <button type="submit" class="w-full bg-indigo-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-indigo-700 transition flex justify-center items-center gap-2">
+                    <a href="{{ route('user.topup.initiate') }}" class="w-full bg-indigo-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-indigo-700 transition flex justify-center items-center gap-2">
                             Proceed to Payment Details 
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
-                        </button>
-                    </form>
+                        </a>
                 </div>
             </div>
 

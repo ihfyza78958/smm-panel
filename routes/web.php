@@ -14,6 +14,14 @@ use App\Models\BlogPost;
 use App\Models\Announcement;
 use App\Models\Setting;
 
+// ── Custom Admin Portal Login ──
+Route::get('/system-admin/portal', function () {
+    if (Auth::check() && Auth::user()->role === 'admin') {
+        return redirect()->route('admin.dashboard');
+    }
+    return view('admin.auth.login');
+})->name('admin.login');
+
 // ── Public Routes ──
 Route::get('/', function () {
     $categories = Category::with(['services' => function($q) {
@@ -86,6 +94,7 @@ Route::middleware(['auth', 'verified', 'banned'])->group(function () {
     // Manual Topup
     Route::get('/user/topup', [\App\Http\Controllers\TopupController::class, 'create'])->name('user.topup.create');
     Route::post('/user/topup', [\App\Http\Controllers\TopupController::class, 'store'])->name('user.topup.store');
+    Route::get('/user/topup/initiate', [\App\Http\Controllers\TopupController::class, 'initiate'])->name('user.topup.initiate');
     Route::get('/user/invoice/{transaction}', [\App\Http\Controllers\TopupController::class, 'show'])->name('user.topup.show');
     Route::put('/user/invoice/{transaction}', [\App\Http\Controllers\TopupController::class, 'update'])->name('user.topup.update');
 
@@ -103,13 +112,7 @@ Route::middleware(['auth', 'verified', 'banned'])->group(function () {
     Route::post('/profile/api-key', [ProfileController::class, 'generateApiKey'])->name('profile.api-key');
 });
 
-// ── Custom Admin Portal Login ──
-Route::get('/system-admin/portal', function () {
-    if (Auth::check() && Auth::user()->role === 'admin') {
-        return redirect()->route('admin.dashboard');
-    }
-    return view('admin.auth.login');
-})->name('admin.login');
+
 
 // ── Admin Routes ──
 Route::middleware(['auth', 'banned', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {

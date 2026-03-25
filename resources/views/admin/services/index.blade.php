@@ -18,6 +18,12 @@
         <div class="mb-4 bg-green-50 border border-green-200 rounded-xl p-4 text-sm text-green-700 font-medium">{{ session('success') }}</div>
     @endif
 
+    <!-- Filters -->
+    <div class="mb-4 flex gap-2">
+        <a href="{{ route('admin.services.index') }}" class="px-3 py-1.5 rounded-lg text-sm font-medium border {{ !request('filter') ? 'bg-indigo-50 border-indigo-200 text-indigo-700' : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50' }}">All Services</a>
+        <a href="{{ route('admin.services.index', ['filter' => 'dead']) }}" class="px-3 py-1.5 rounded-lg text-sm font-medium border {{ request('filter') === 'dead' ? 'bg-red-50 border-red-200 text-red-700' : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50' }}">Show Dead Services</a>
+    </div>
+
     <!-- Bulk Price Update -->
     <div x-data="{ showBulk: false }" class="mb-4">
         <button @click="showBulk = !showBulk" class="text-sm text-indigo-600 hover:text-indigo-800 font-medium flex items-center gap-1">

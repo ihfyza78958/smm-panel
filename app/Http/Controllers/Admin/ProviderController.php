@@ -400,9 +400,12 @@ class ProviderController extends Controller
                 $remote = $remoteById[$local->provider_service_id] ?? null;
 
                 if (!$remote) {
-                    // Service no longer exists on provider — disable it
+                    // Service no longer exists on provider — Disable it, mark as dead, but KEEP in DB
                     if ($local->is_active) {
-                        $local->update(['is_active' => false]);
+                        $local->update([
+                            'is_active' => false,
+                            'description' => '[DEAD] ' . $local->description
+                        ]);
                         $disabled++;
                     }
                     continue;

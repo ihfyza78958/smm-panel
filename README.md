@@ -173,3 +173,8 @@ For issues:
 ## 📄 License
 
 Laravel SMM Panel Application
+
+## Payment Automation (n8n Integration)
+This project supports automated payment verification via local n8n webhooks. 
+When users submit transaction codes, it securely triggers local verification flows. 
+For setup instructions, headers, and payload structures, please read the [N8N_AUTOMATION.md](N8N_AUTOMATION.md) guide.

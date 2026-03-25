@@ -58,13 +58,19 @@ class SocialAuthController extends Controller
             }
         }
 
+        // SECURITY: Check if user is banned before logging them in
+        if ($user && $user->is_banned) {
+            return redirect()->route('login')
+                ->with('error', 'Your account has been suspended. Please contact support.');
+        }
+
         if (!$user) {
             // 3. Create new account
             $user = User::create([
                 'name'              => $socialUser->getName() ?? $socialUser->getNickname() ?? 'User',
                 'email'             => $email,
                 $idColumn           => $socialId,
-                'password'          => null,
+                'password'          => \Illuminate\Support\Facades\Hash::make(\Illuminate\Support\Str::random(32)),
                 'email_verified_at' => now(),
             ]);
         }

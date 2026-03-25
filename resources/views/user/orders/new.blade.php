@@ -6,8 +6,8 @@
          data-services-url="{{ route('orders.category-services', ['category' => 'CATEGORY_ID']) }}">
 
         <!-- Order Form -->
-        <div class="lg:col-span-2">
-            <div class="card relative overflow-hidden">
+        <div class="lg:col-span-2 relative z-20">
+            <div class="card relative overflow-visible z-10">
 
                 <!-- Progress Bar -->
                 <div class="absolute top-0 left-0 w-full h-1 bg-gray-100">
@@ -26,68 +26,43 @@
                 <form action="{{ route('orders.store') }}" method="POST" class="space-y-5 mt-4">
                     @csrf
 
-                    <!-- Category search + select -->
-                    <div>
+                    <!-- Category selection (Select2) -->
+                    <div class="mb-4">
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Platform / Category</label>
-                        <input type="text" x-model="categorySearch" placeholder="Search category..."
-                            class="input-field mb-2 text-sm"
-                            autocomplete="off">
-                        <select name="category_id" x-model="selectedCategory"
-                            size="6"
-                            class="input-field bg-gray-50 h-auto">
-                            <option value="">— select a category —</option>
-                            <template x-for="cat in filteredCategories" :key="cat.id">
-                                <option :value="cat.id" x-text="cat.name"></option>
-                            </template>
+                        <select name="category_id" id="category_select" x-model="selectedCategory" class="w-full select2-styled" style="width: 100%">
+                            <option value="">— Select a category —</option>
+                            @foreach($categories as $category)
+                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                            @endforeach
                         </select>
-                        <p class="text-xs text-gray-400 mt-1" x-text="filteredCategories.length + ' categories'"></p>
                     </div>
 
-                    <!-- Service -->
-                    <div style="display:none" x-show="selectedCategory">
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Service</label>
-                        <div class="relative">
-                            <select name="service_id" x-model="selectedServiceId" @change="pickService"
-                                :disabled="loadingServices"
-                                class="input-field bg-gray-50 disabled:opacity-60">
-                                <template x-if="loadingServices">
-                                    <option>Loading...</option>
-                                </template>
-                                <template x-if="!loadingServices">
-                                    <template x-if="services.length === 0">
-                                        <option value="">No services found</option>
-                                    </template>
-                                </template>
-                                <template x-if="!loadingServices && services.length > 0">
-                                    <option value="">— select a service —</option>
-                                </template>
-                                <template x-for="svc in services" :key="svc.id">
-                                    <option :value="svc.id" x-text="'#'+svc.id+' '+svc.name+' — NPR '+svc.price+'/1k'"></option>
-                                </template>
-                            </select>
-                            <div x-show="loadingServices" class="absolute right-3 top-3 pointer-events-none">
-                                <svg class="animate-spin h-4 w-4 text-indigo-500" fill="none" viewBox="0 0 24 24">
-                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
-                                </svg>
-                            </div>
-                        </div>
+                    <!-- Service (Select2) -->
+                    <div style="display:none" id="service_container" x-show="selectedCategory" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform -translate-y-2" x-transition:enter-end="opacity-100 transform translate-y-0">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Service <span x-show="loadingServices" class="text-indigo-500 text-xs ml-2">(Loading...)</span></label>
+                        <select name="service_id" id="service_select" x-model="selectedServiceId" class="w-full select2-styled" style="width: 100%" :disabled="loadingServices">
+                            <option value="">— Select a category first —</option>
+                        </select>
+                        
                         <div style="display:none" x-show="currentService"
-                            class="mt-2 p-3 bg-blue-50 rounded-lg border border-blue-100 text-sm text-blue-800">
-                            <p><strong>Min:</strong> <span x-text="currentService?.min"></span> &nbsp;|&nbsp; <strong>Max:</strong> <span x-text="currentService?.max"></span></p>
-                            <p class="mt-1 text-xs text-blue-500" x-text="currentService?.desc || ''"></p>
+                            class="mt-3 p-4 bg-indigo-50 rounded-lg border border-indigo-100 text-sm text-indigo-900 shadow-sm">
+                            <div class="flex gap-4 mb-2">
+                                <p class="bg-white px-3 py-1 rounded shadow-sm"><strong>Min:</strong> <span x-text="currentService?.min"></span></p>
+                                <p class="bg-white px-3 py-1 rounded shadow-sm"><strong>Max:</strong> <span x-text="currentService?.max"></span></p>
+                            </div>
+                            <p class="mt-2 text-xs text-indigo-700 font-medium" x-text="currentService?.desc || ''"></p>
                         </div>
                     </div>
 
                     <!-- Link -->
-                    <div style="display:none" x-show="selectedServiceId">
+                    <div style="display:none" x-show="selectedServiceId" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform -translate-y-2" x-transition:enter-end="opacity-100 transform translate-y-0">
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Link / Username</label>
                         <input type="text" name="link" value="{{ old('link') }}" class="input-field"
                             placeholder="https://... or @username" required>
                     </div>
 
                     <!-- Quantity -->
-                    <div style="display:none" x-show="selectedServiceId">
+                    <div style="display:none" x-show="selectedServiceId" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform -translate-y-2" x-transition:enter-end="opacity-100 transform translate-y-0">
                         <div class="flex justify-between mb-2">
                             <label class="text-sm font-semibold text-gray-700">Quantity</label>
                             <button type="button" class="text-xs text-indigo-600 font-medium"
@@ -149,6 +124,91 @@
         </div>
     </div>
 
+    
+    <!-- Select2 CSS & JS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    
+    <style>
+        .select2-container--default .select2-selection--single {
+            height: 46px;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 44px;
+            right: 10px;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            color: #374151;
+            font-size: 0.875rem;
+            padding-left: 1rem;
+        }
+        .select2-dropdown {
+            border-color: #e5e7eb;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        .select2-search__field {
+            border-radius: 0.375rem !important;
+        }
+        .select2-results__option {
+            padding: 8px 16px;
+            font-size: 0.875rem;
+        }
+        .select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
+            background-color: #4f46e5;
+        }
+    </style>
+    
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Initialize Select2 on both dropdowns
+        $("#category_select").select2({
+            placeholder: "— Select a category —",
+            width: "100%"
+        });
+        
+        $("#service_select").select2({
+            placeholder: "— Select a service —",
+            width: "100%"
+        });
+
+        // Listen for Select2 changes and sync with Alpine data model
+        $("#category_select").on("change", function() {
+            let val = $(this).val();
+            // Dispatch a native DOM event that Alpine can catch via @change or we can update directly
+            let el = document.getElementById("category_select");
+            el.dispatchEvent(new Event("input", { bubbles: true }));
+            el.dispatchEvent(new Event("change", { bubbles: true }));
+            
+            // Alpine 3 safe data update
+            if (typeof Alpine !== "undefined") {
+                let alpineData = Alpine.$data(document.querySelector("[x-data='orderForm']"));
+                if (alpineData) alpineData.selectedCategory = val;
+            }
+        });
+        
+        $("#service_select").on("change", function() {
+            let val = $(this).val();
+            let el = document.getElementById("service_select");
+            el.dispatchEvent(new Event("input", { bubbles: true }));
+            el.dispatchEvent(new Event("change", { bubbles: true }));
+            
+            if (typeof Alpine !== "undefined") {
+                let alpineData = Alpine.$data(document.querySelector("[x-data='orderForm']"));
+                if (alpineData) {
+                    alpineData.selectedServiceId = val;
+                    alpineData.pickService();
+                }
+            }
+        });
+    });
+    </script>
+
     <script>
     document.addEventListener('alpine:init', () => {
         Alpine.data('orderForm', () => ({
@@ -157,6 +217,12 @@
             categorySearch: '',
 
             selectedCategory: '',
+            selectedCategoryName: '',
+            
+            selectCategory(cat) {
+                this.selectedCategory = cat.id;
+                this.selectedCategoryName = cat.name;
+            },
             selectedServiceId: '',
             services: [],
             loadingServices: false,
@@ -188,6 +254,13 @@
                     const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
                     if (!res.ok) throw new Error('HTTP ' + res.status);
                     this.services = await res.json();
+                    
+                    // Populate Select2 Service Dropdown
+                    let svcOptions = '<option value="">— Select a service —</option>';
+                    this.services.forEach(s => {
+                        svcOptions += `<option value="${s.id}">#${s.id} ${s.name} — NPR ${s.price}/1k</option>`;
+                    });
+                    $('#service_select').html(svcOptions).trigger('change');
                 } catch(e) {
                     console.error('Services load error:', e);
                     this.services = [];
@@ -204,6 +277,11 @@
             get totalPrice() {
                 if (!this.currentService || !this.quantity) return '0.00';
                 return ((this.currentService.price / 1000) * Number(this.quantity)).toFixed(2);
+            },
+
+            get selectedServiceLabel() {
+                if (!this.currentService) return '';
+                return `#${this.currentService.id} ${this.currentService.name} - NPR ${this.currentService.price}/1k`;
             },
 
             get progress() {

@@ -13,7 +13,7 @@ class ProviderCurrencySyncService
 {
     public function syncToLocalCurrency(?string $targetCurrency = null): array
     {
-        $localCurrency = strtoupper((string) ($targetCurrency ?: Setting::get('currency_symbol', 'NPR')));
+        $localCurrency = strtoupper((string) ($targetCurrency ?: Setting::get('currency_code', Setting::get('currency_symbol', 'NPR'))));
         if (!preg_match('/^[A-Z]{3}$/', $localCurrency)) {
             $localCurrency = 'NPR';
         }
@@ -79,7 +79,7 @@ class ProviderCurrencySyncService
                     'conversion_rate' => round($newConversionRate, 6),
                 ]);
 
-                if ($oldConversionRate !== $newConversionRate) {
+                if (abs($oldConversionRate - $newConversionRate) > 0.0000001) {
                     $ratio = $newConversionRate / $oldConversionRate;
 
                     Service::where('smm_provider_id', $provider->id)
@@ -87,7 +87,7 @@ class ProviderCurrencySyncService
                         ->chunkById(200, function ($services) use ($ratio, &$rescaledServices) {
                             foreach ($services as $service) {
                                 $service->update([
-                                    'provider_rate' => round(((float) $service->provider_rate) * $ratio, 6),
+                                    'provider_rate' => round(((float) $service->provider_rate) * $ratio, 4),
                                     'price' => round(((float) $service->price) * $ratio, 4),
                                 ]);
                                 $rescaledServices++;

@@ -1,8 +1,19 @@
 <x-admin-layout>
-    <div class="flex justify-between items-center mb-6">
-        <h2 class="text-2xl font-bold text-gray-800">API Providers Management</h2>
-        <div class="flex items-center gap-2">
-            <form method="POST" action="{{ route('admin.providers.update-market-rates') }}">
+    <div class="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-4 mb-6">
+        <div>
+            <h2 class="text-2xl font-bold text-gray-800">API Providers Management</h2>
+            <p class="text-sm text-gray-500 mt-1">Monitor provider health, balances, sync status, and service import pipeline.</p>
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+            @php
+                $updateFxAction = url('/admin/providers/update-market-rates');
+                if (\Illuminate\Support\Facades\Route::has('admin.providers.update-market-rates')) {
+                    $updateFxAction = route('admin.providers.update-market-rates');
+                } elseif (\Illuminate\Support\Facades\Route::has('admin.providers.updateMarketRates')) {
+                    $updateFxAction = route('admin.providers.updateMarketRates');
+                }
+            @endphp
+            <form method="POST" action="{{ $updateFxAction }}">
                 @csrf
                 <button type="submit" class="bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 transition flex items-center gap-2">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h4l3-7 4 18 3-7h4"></path></svg>
@@ -16,6 +27,34 @@
         </div>
     </div>
 
+    @php
+        $providerCount = $providers->count();
+        $activeProviders = $providers->where('is_active', true)->count();
+        $totalImported = (int) $providers->sum(function ($p) {
+            return (int) ($p->services_count ?? $p->imported_services ?? 0);
+        });
+        $totalBalance = (float) $providers->sum('balance');
+    @endphp
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
+        <div class="bg-white rounded-xl border border-gray-100 p-4">
+            <p class="text-xs uppercase tracking-wide text-gray-500">Providers</p>
+            <p class="text-2xl font-bold text-gray-900 mt-1">{{ $providerCount }}</p>
+        </div>
+        <div class="bg-white rounded-xl border border-gray-100 p-4">
+            <p class="text-xs uppercase tracking-wide text-gray-500">Active</p>
+            <p class="text-2xl font-bold text-emerald-600 mt-1">{{ $activeProviders }}</p>
+        </div>
+        <div class="bg-white rounded-xl border border-gray-100 p-4">
+            <p class="text-xs uppercase tracking-wide text-gray-500">Imported Services</p>
+            <p class="text-2xl font-bold text-indigo-600 mt-1">{{ number_format($totalImported) }}</p>
+        </div>
+        <div class="bg-white rounded-xl border border-gray-100 p-4">
+            <p class="text-xs uppercase tracking-wide text-gray-500">Combined Balance</p>
+            <p class="text-2xl font-bold text-gray-900 mt-1">{{ number_format($totalBalance, 2) }}</p>
+        </div>
+    </div>
+
     @if(session('success'))
         <div class="mb-6 bg-green-50 border border-green-200 rounded-xl p-4 text-sm text-green-700 font-medium">{{ session('success') }}</div>
     @endif
@@ -23,7 +62,7 @@
         <div class="mb-6 bg-red-50 border border-red-200 rounded-xl p-4 text-sm text-red-700 font-medium">{{ session('error') }}</div>
     @endif
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-6">
         @forelse($providers as $provider)
         <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 relative overflow-hidden">
             <!-- Health Status -->

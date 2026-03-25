@@ -93,14 +93,14 @@ class ProviderController extends Controller
         }
 
         $rescaledServices = 0;
-        if ($oldConversionRate !== $newConversionRate) {
+        if (abs($oldConversionRate - $newConversionRate) > 0.0000001) {
             $ratio = $newConversionRate / $oldConversionRate;
 
             Service::where('smm_provider_id', $provider->id)
                 ->whereNotNull('provider_rate')
                 ->chunkById(200, function ($services) use ($ratio, &$rescaledServices) {
                     foreach ($services as $service) {
-                        $newProviderRate = round(((float) $service->provider_rate) * $ratio, 6);
+                        $newProviderRate = round(((float) $service->provider_rate) * $ratio, 4);
                         $newPrice = round(((float) $service->price) * $ratio, 4);
 
                         $service->update([
@@ -153,7 +153,15 @@ class ProviderController extends Controller
      */
     public function updateMarketRates(ProviderCurrencySyncService $syncService)
     {
-        $result = $syncService->syncToLocalCurrency();
+        try {
+            $result = $syncService->syncToLocalCurrency();
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::error('Provider market rate sync failed', [
+                'message' => $e->getMessage(),
+            ]);
+
+            return back()->with('error', 'Market rate update failed. Please try again.');
+        }
 
         if (!($result['success'] ?? false)) {
             return back()->with('error', (string) ($result['message'] ?? 'Currency sync failed.'));
@@ -228,7 +236,7 @@ class ProviderController extends Controller
                 $svc['local_provider_rate'] = $local ? $local->provider_rate : null;
                 $svc['local_id'] = $local ? $local->id : null;
                 $svc['converted_rate'] = $convertedRemoteRate;
-                $svc['price_changed'] = $local && (float) $local->provider_rate !== $convertedRemoteRate;
+                $svc['price_changed'] = $local ? $this->hasRateChanged((float) $local->provider_rate, $convertedRemoteRate) : false;
 
                 $organized[$category][] = $svc;
             }
@@ -404,7 +412,7 @@ class ProviderController extends Controller
                 $remoteRate = (float) $remote['rate'];
                 $convertedRemoteRate = $this->convertRate($provider, $remoteRate);
 
-                if ((float) $local->provider_rate !== $convertedRemoteRate) {
+                if ($this->hasRateChanged((float) $local->provider_rate, $convertedRemoteRate)) {
                     $changes['provider_rate'] = $convertedRemoteRate;
                     // Recalculate price using current margin
                     $margin = ($local->profit_margin ?? 20) / 100;
@@ -469,6 +477,11 @@ class ProviderController extends Controller
             $conversionRate = 1;
         }
 
-        return round($rate * $conversionRate, 6);
+        return round($rate * $conversionRate, 4);
+    }
+
+    private function hasRateChanged(float $localRate, float $remoteConvertedRate): bool
+    {
+        return abs(round($localRate, 4) - round($remoteConvertedRate, 4)) >= 0.0001;
     }
 }

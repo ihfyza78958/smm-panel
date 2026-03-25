@@ -1,6 +1,17 @@
 <x-admin-layout>
     <x-slot name="header">Dashboard</x-slot>
 
+    <div class="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+            <h1 class="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
+            <p class="text-sm text-gray-500 mt-1">Welcome back, {{ auth()->user()->name }}. Here's what's happening today.</p>
+        </div>
+        <div class="flex items-center gap-2">
+            <a href="{{ route('admin.orders.index') }}" class="bg-white border border-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-50 shadow-sm transition">Manage Orders</a>
+            <a href="{{ route('admin.users.index') }}" class="bg-indigo-600 border border-transparent text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700 shadow-sm transition">Manage Users</a>
+        </div>
+    </div>
+    
     <!-- Stats Row 1 -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8">
         <!-- Revenue Card -->

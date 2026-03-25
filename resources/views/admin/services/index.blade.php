@@ -60,7 +60,7 @@
     <!-- Services Table -->
     <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
         <div class="overflow-x-auto">
-            <table class="w-full text-sm text-left">
+            <table class="w-full text-sm text-left" style="min-width:1180px">
                 <thead class="text-xs text-gray-500 uppercase bg-gray-50 border-b border-gray-100">
                     <tr>
                         <th class="px-4 py-4 font-semibold w-12">ID</th>
@@ -78,34 +78,34 @@
                 <tbody class="divide-y divide-gray-100">
                     @forelse($services as $service)
                     <tr class="hover:bg-gray-50 transition group">
-                        <td class="px-4 py-4 text-gray-400 font-mono text-xs">{{ $service->id }}</td>
-                        <td class="px-4 py-4">
-                            <div class="font-medium text-gray-900 text-xs leading-relaxed">{{ $service->name }}</div>
+                        <td class="px-4 py-4 text-gray-400 font-mono text-xs whitespace-nowrap">{{ $service->id }}</td>
+                        <td class="px-4 py-4" style="min-width:260px">
+                            <div class="font-medium text-gray-900 text-xs leading-relaxed truncate" style="max-width:260px" title="{{ $service->name }}">{{ $service->name }}</div>
                             @if($service->provider_service_id)
-                                <div class="text-[10px] text-gray-400 font-mono">PID: {{ $service->provider_service_id }}</div>
+                                <div class="text-[10px] text-gray-400 font-mono whitespace-nowrap">PID: {{ $service->provider_service_id }}</div>
                             @endif
                         </td>
-                        <td class="px-4 py-4">
-                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-800">
+                        <td class="px-4 py-4" style="min-width:140px">
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-800 truncate" style="max-width:130px" title="{{ $service->category->name ?? 'N/A' }}">
                                 {{ $service->category->name ?? 'N/A' }}
                             </span>
                         </td>
-                        <td class="px-4 py-4">
+                        <td class="px-4 py-4" style="min-width:140px">
                             @if($service->provider)
-                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-purple-50 text-purple-700" title="{{ $service->provider->url }}">
+                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-purple-50 text-purple-700 truncate" style="max-width:130px" title="{{ $service->provider->domain }}">
                                     {{ $service->provider->domain }}
                                 </span>
                             @else
                                 <span class="text-xs text-gray-400">Manual</span>
                             @endif
                         </td>
-                        <td class="px-4 py-4 text-right text-xs text-gray-500 font-mono">
+                        <td class="px-4 py-4 text-right text-xs text-gray-500 font-mono whitespace-nowrap">
                             {{ $service->provider_rate ? number_format($service->provider_rate, 4) : '—' }}
                         </td>
-                        <td class="px-4 py-4 text-right font-bold text-gray-800">
+                        <td class="px-4 py-4 text-right font-bold text-gray-800 whitespace-nowrap">
                             {{ number_format($service->price, 2) }}
                         </td>
-                        <td class="px-4 py-4 text-right">
+                        <td class="px-4 py-4 text-right whitespace-nowrap">
                             @if($service->provider_rate && $service->provider_rate > 0)
                                 @php $margin = (($service->price - $service->provider_rate) / $service->provider_rate) * 100; @endphp
                                 <span class="text-xs font-semibold {{ $margin > 0 ? 'text-green-600' : 'text-red-600' }}">
@@ -115,7 +115,7 @@
                                 <span class="text-xs text-gray-400">—</span>
                             @endif
                         </td>
-                        <td class="px-4 py-4 text-center text-xs text-gray-500">
+                        <td class="px-4 py-4 text-center text-xs text-gray-500 whitespace-nowrap">
                             {{ $service->min_quantity }} - {{ $service->max_quantity }}
                         </td>
                         <td class="px-4 py-4 text-center">
@@ -126,7 +126,7 @@
                                 </button>
                             </form>
                         </td>
-                        <td class="px-4 py-4 text-right opacity-0 group-hover:opacity-100 transition-opacity">
+                        <td class="px-4 py-4 text-right opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
                             <div class="flex justify-end gap-2">
                                 <a href="{{ route('admin.services.edit', $service) }}" class="text-blue-600 hover:text-blue-900" title="Edit">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>

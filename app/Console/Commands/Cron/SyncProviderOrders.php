@@ -35,6 +35,7 @@ class SyncProviderOrders extends Command
                 // Map provider status to our status
                 $statusMap = [
                     'inprogress' => 'processing',
+                    'in progress' => 'processing',
                     'completed' => 'completed',
                     'canceled' => 'canceled',
                     'partial' => 'partial',

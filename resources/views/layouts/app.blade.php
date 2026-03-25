@@ -39,7 +39,7 @@
     </header>
 
     <!-- Sidebar -->
-    <aside class="fixed inset-y-0 left-0 bg-white border-r border-gray-200 w-64 transform transition-transform duration-300 lg:relative lg:translate-x-0 z-30 flex flex-col h-full shadow-lg lg:shadow-none"
+    <aside class="fixed inset-y-0 left-0 bg-white border-r border-gray-200 w-72 transform transition-transform duration-300 lg:relative lg:translate-x-0 z-30 flex flex-col h-full shadow-lg lg:shadow-none"
         :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'">
         
         <!-- Logo -->
@@ -105,7 +105,7 @@
             </div>
         </div>
 
-        <div class="p-6 max-w-7xl mx-auto">
+        <div class="p-4 sm:p-6 max-w-7xl mx-auto w-full">
             {{ $slot }}
         </div>
     </main>

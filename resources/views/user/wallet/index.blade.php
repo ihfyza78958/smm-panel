@@ -25,13 +25,14 @@
                     </div>
                 </div>
 
-                <div x-show="open" class="mt-4 pt-4 border-t border-gray-100" x-transition>
-                    <form action="{{ route('user.topup.store') }}" method="POST" class="flex gap-2">
+                <div x-show="open" class="mt-4 pt-4 border-t border-gray-100" x-transition style="display: none;">
+                    <form action="{{ route('user.topup.store') }}" method="POST">
                         @csrf
-                        <input type="number" name="amount" placeholder="Amount (NPR)" min="10" required 
-                            class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 text-sm">
-                        <button type="submit" class="bg-indigo-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-indigo-700 transition whitespace-nowrap">
-                            Pay
+                        <input type="hidden" name="payment_method" value="manual">
+                        <input type="hidden" name="amount" value="0">
+                        <button type="submit" class="w-full bg-indigo-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-indigo-700 transition flex justify-center items-center gap-2">
+                            Proceed to Payment Details 
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
                         </button>
                     </form>
                 </div>
@@ -114,23 +115,22 @@
                 </div>
             @endif
 
-             <!-- Bank Transfer -->
-             <div class="card hover:border-blue-400 transition cursor-pointer">
+             <!-- Bank Transfer (Coming Soon) -->
+             <div class="card bg-gray-50 border-gray-200 opacity-60 cursor-not-allowed">
                 <div class="flex items-center gap-4 mb-4">
-                    <div class="w-16 h-16 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600 font-bold text-xs border border-blue-100">
+                    <div class="w-16 h-16 bg-gray-100 rounded-xl flex items-center justify-center text-gray-400 font-bold text-xs border border-gray-200">
                         BANK
                     </div>
                     <div>
-                        <h3 class="font-bold text-lg text-gray-900">Bank Transfer</h3>
-                        <p class="text-xs text-gray-500">Manual Verification</p>
+                        <h3 class="font-bold text-lg text-gray-700">Bank Transfer</h3>
+                        <p class="text-xs font-semibold text-blue-600 mt-1">Coming Soon</p>
                     </div>
                 </div>
-                <div class="text-sm text-gray-600 bg-gray-50 p-3 rounded-lg border border-gray-100 mb-4">
+                <div class="text-sm text-gray-400 bg-white p-3 rounded-lg border border-gray-100 mb-4 blur-[2px]">
                     <p><strong>Bank:</strong> Nabil Bank Ltd</p>
                     <p><strong>Acct Name:</strong> SMM Services Pvt Ltd</p>
                     <p><strong>Acct No:</strong> 012301230123</p>
                 </div>
-                <p class="text-xs text-gray-400 text-center">Please contact support with receipt after transfer.</p>
             </div>
         </div>
 

@@ -29,32 +29,32 @@
         <!-- Services Table -->
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
             <div class="overflow-x-auto">
-                <table class="w-full text-sm text-left">
+            <table class="w-full text-sm text-left">
                     <thead class="text-xs text-gray-500 uppercase bg-gray-50 border-b border-gray-100">
                         <tr>
-                            <th class="px-6 py-4 font-semibold w-20">ID</th>
-                            <th class="px-6 py-4 font-semibold">Service</th>
-                            <th class="px-6 py-4 font-semibold text-right">Rate / 1000</th>
-                            <th class="px-6 py-4 font-semibold text-center">Min / Max</th>
+                            <th class="px-3 sm:px-6 py-4 font-semibold w-12 sm:w-20">ID</th>
+                            <th class="px-3 sm:px-6 py-4 font-semibold">Service</th>
+                            <th class="px-3 sm:px-6 py-4 font-semibold text-right">Rate/1k</th>
+                            <th class="px-3 sm:px-6 py-4 font-semibold text-center hidden md:table-cell">Min/Max</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100">
                         @forelse($services as $service)
                         <tr class="hover:bg-gray-50 transition">
-                            <td class="px-6 py-3 text-gray-400 font-mono text-xs">{{ $service->id }}</td>
-                            <td class="px-6 py-3">
-                                <div class="font-medium text-gray-900">{{ $service->name }}</div>
+                            <td class="px-3 sm:px-6 py-3 text-gray-400 font-mono text-xs">{{ $service->id }}</td>
+                            <td class="px-3 sm:px-6 py-3">
+                                <div class="font-medium text-gray-900" style="max-width:100%; white-space: normal; word-break: break-word;" title="{{ $service->name }}">{{ $service->name }}</div>
                                 <div class="text-xs text-indigo-500 mt-0.5">{{ $service->category->name }}</div>
                                 @if($service->description)
-                                    <div class="text-xs text-gray-400 mt-0.5 line-clamp-1">{{ $service->description }}</div>
+                                    <div class="text-xs text-gray-400 mt-0.5 line-clamp-1" style="max-width:min(100%,30rem)">{{ $service->description }}</div>
                                 @endif
                             </td>
-                            <td class="px-6 py-3 text-right">
+                            <td class="px-3 sm:px-6 py-3 text-right">
                                 <span class="bg-indigo-50 text-indigo-700 font-bold px-2.5 py-1 rounded-lg text-xs">
                                     NPR {{ number_format($service->price, 2) }}
                                 </span>
                             </td>
-                            <td class="px-6 py-3 text-center font-mono text-gray-600 text-xs">
+                            <td class="px-3 sm:px-6 py-3 text-center font-mono text-gray-600 text-xs hidden md:table-cell">
                                 {{ number_format($service->min_quantity) }} – {{ number_format($service->max_quantity) }}
                             </td>
                         </tr>

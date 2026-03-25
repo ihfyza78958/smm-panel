@@ -28,8 +28,8 @@
 
     <!-- Orders Table -->
     <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-        <div class="overflow-x-auto">
-             <table class="w-full text-sm text-left">
+           <div class="overflow-x-auto">
+               <table class="w-full min-w-[980px] text-sm text-left">
                 <thead class="text-xs text-gray-500 uppercase bg-gray-50 border-b border-gray-100">
                     <tr>
                         <th class="px-6 py-4 font-semibold w-24">Order ID</th>
@@ -45,24 +45,24 @@
                 <tbody class="divide-y divide-gray-100">
                     @forelse($orders as $order)
                     <tr class="hover:bg-gray-50 transition">
-                        <td class="px-6 py-4">
+                        <td class="px-6 py-4 whitespace-nowrap">
                             <span class="font-mono text-gray-600 font-bold">#{{ $order->id }}</span>
                             @if($order->provider_order_id)
                                 <div class="text-[10px] text-gray-400 mt-0.5">PID: {{ $order->provider_order_id }}</div>
                             @endif
                         </td>
-                        <td class="px-6 py-4">
-                            <div class="font-medium text-gray-900">{{ $order->user->name ?? 'Unknown' }}</div>
-                            <div class="text-xs text-gray-400">{{ $order->user->email ?? 'N/A' }}</div>
+                        <td class="px-6 py-4" style="min-width:180px">
+                            <div class="font-medium text-gray-900 truncate" style="max-width:180px" title="{{ $order->user->name ?? 'Unknown' }}">{{ $order->user->name ?? 'Unknown' }}</div>
+                            <div class="text-xs text-gray-400 truncate" style="max-width:180px" title="{{ $order->user->email ?? 'N/A' }}">{{ $order->user->email ?? 'N/A' }}</div>
                         </td>
-                        <td class="px-6 py-4 max-w-xs">
-                            <div class="font-medium text-gray-900 truncate" title="{{ $order->service->name ?? '' }}">{{ $order->service->name ?? 'Deleted Service' }}</div>
-                            <a href="{{ $order->link }}" target="_blank" class="text-xs text-blue-500 hover:underline truncate block max-w-[200px]">{{ $order->link }}</a>
+                        <td class="px-6 py-4" style="min-width:280px">
+                            <div class="font-medium text-gray-900 truncate" style="max-width:280px" title="{{ $order->service->name ?? '' }}">{{ $order->service->name ?? 'Deleted Service' }}</div>
+                            <a href="{{ $order->link }}" target="_blank" class="text-xs text-blue-500 hover:underline truncate block" style="max-width:280px" title="{{ $order->link }}">{{ $order->link }}</a>
                         </td>
-                        <td class="px-6 py-4 text-center font-mono text-gray-600">
+                        <td class="px-6 py-4 text-center font-mono text-gray-600 whitespace-nowrap">
                             {{ number_format($order->quantity) }}
                         </td>
-                         <td class="px-6 py-4 text-right">
+                         <td class="px-6 py-4 text-right whitespace-nowrap">
                              <span class="font-bold text-gray-700">NPR {{ number_format($order->charge, 2) }}</span>
                         </td>
                         <td class="px-6 py-4 text-center">
@@ -82,10 +82,10 @@
                                 {{ ucfirst($order->status) }}
                             </span>
                         </td>
-                         <td class="px-6 py-4 text-right text-gray-500 text-xs">
+                         <td class="px-6 py-4 text-right text-gray-500 text-xs whitespace-nowrap">
                              {{ $order->created_at->format('M d H:i') }}
                         </td>
-                        <td class="px-6 py-4 text-right">
+                        <td class="px-6 py-4 text-right whitespace-nowrap">
                              <a href="{{ route('admin.orders.show', $order) }}" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">
                                 View
                             </a>

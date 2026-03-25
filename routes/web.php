@@ -8,6 +8,7 @@ use App\Http\Controllers\User\CouponController;
 use App\Http\Controllers\User\MassOrderController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Category;
 use App\Models\BlogPost;
 use App\Models\Announcement;
@@ -49,7 +50,8 @@ Route::middleware(['auth', 'verified', 'banned'])->group(function () {
             $q->where('is_active', true);
         }])->where('is_active', true)->orderBy('sort_order')->get();
         
-        $user = auth()->user();
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
         $recentOrders = $user->orders()->with('service')->latest()->limit(5)->get();
         $announcements = Announcement::getActive();
         
@@ -101,10 +103,18 @@ Route::middleware(['auth', 'verified', 'banned'])->group(function () {
     Route::post('/profile/api-key', [ProfileController::class, 'generateApiKey'])->name('profile.api-key');
 });
 
+// ── Custom Admin Portal Login ──
+Route::get('/system-admin/portal', function () {
+    if (Auth::check() && Auth::user()->role === 'admin') {
+        return redirect()->route('admin.dashboard');
+    }
+    return view('admin.auth.login');
+})->name('admin.login');
+
 // ── Admin Routes ──
-Route::middleware(['auth', 'verified', 'banned', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'banned', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     // Dashboard
-    Route::get('/', fn () => redirect()->route('admin.dashboard'));
+    Route::get('/', fn () => to_route('admin.dashboard'));
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
     // Users
@@ -135,8 +145,10 @@ Route::middleware(['auth', 'verified', 'banned', 'role:admin'])->prefix('admin')
     Route::post('/orders/bulk-cancel', [\App\Http\Controllers\Admin\OrderController::class, 'bulkCancel'])->name('orders.bulk-cancel');
 
     // Providers
-    Route::resource('providers', \App\Http\Controllers\Admin\ProviderController::class)->except(['show']);
-    Route::post('/providers/update-market-rates', [\App\Http\Controllers\Admin\ProviderController::class, 'updateMarketRates'])->name('providers.update-market-rates');
+    Route::match(['get', 'post'], '/providers/update-market-rates', [\App\Http\Controllers\Admin\ProviderController::class, 'updateMarketRates'])->name('providers.update-market-rates');
+    Route::resource('providers', \App\Http\Controllers\Admin\ProviderController::class)
+        ->except(['show'])
+        ->where(['provider' => '[0-9]+']);
     Route::post('/providers/{provider}/sync-balance', [\App\Http\Controllers\Admin\ProviderController::class, 'syncBalance'])->name('providers.sync-balance');
     Route::get('/providers/{provider}/services', [\App\Http\Controllers\Admin\ProviderController::class, 'showServices'])->name('providers.services');
     Route::post('/providers/{provider}/fetch-services', [\App\Http\Controllers\Admin\ProviderController::class, 'fetchServices'])->name('providers.fetch-services');

@@ -1,178 +1,63 @@
-# SMM Panel - Laravel Application
+# SMM Panel 🚀
 
-A professional SMM (Social Media Marketing) panel built with Laravel 11, featuring wallet system, payment integration, and reseller API.
+A modern, highly optimized, dockerized Laravel SMM Panel built for the Nepali and Indian markets.
 
-## 🚀 Quick Deploy to Ubuntu Server
+## Key Features
+- **Fully Dockerized** for instant, identical deployments anywhere
+- **eSewa / Khalti / Bank** Payment Automation (via n8n Webhooks)
+- **Automatic Nightly Sync** (Pulls new services, adjusts pricing, removes dead services)
+- **Built-in SEO Blog** engine for organic ranking
+- **Mobile-first UI**
+
+---
+
+## 🛠️ Installation (First Time Setup on New Server)
 
 ### Prerequisites
-- Ubuntu 20.04+ server
-- Docker & Docker Compose installed
-- 2GB RAM minimum
+- A Linux Server (Ubuntu 22.04+ recommended)
+- **Docker** & **Docker Compose** installed
+- **Git** installed
 
-### Installation Steps
-
-**1. Install Docker (if not installed):**
-```bash
-curl -fsSL https://get.docker.com -o get-docker.sh
-sudo sh get-docker.sh
-sudo usermod -aG docker $USER
-newgrp docker
-```
-
-**2. Clone Repository:**
+### Step 1: Clone the repository
 ```bash
 git clone https://github.com/ioprakash/smm-panel.git
 cd smm-panel
 ```
 
-**3. Configure Environment:**
+### Step 2: Configure Environment
 ```bash
-cp .env.production .env
+cp .env.example .env
 nano .env
 ```
+*Update your database credentials, domain name (`APP_URL`), Google Client IDs, and n8n webhook keys.*
 
-Update these required values:
-- `APP_URL` - Your server URL
-- `DB_PASSWORD` - Strong database password
-- `MAIL_*` - Email configuration
-- Payment gateway credentials
-
-**4. Deploy:**
+### Step 3: Run the Auto-Installer
 ```bash
-# Make script executable
-chmod +x scripts/deploy.sh
-
-# Run deployment
-./scripts/deploy.sh
+chmod +x install.sh
+./install.sh
 ```
-
-**5. Access Application:**
-- URL: `http://your-server-ip:8945`
-- Admin: `admin@smmpanel.com` / `password`
-- User: `user@smmpanel.com` / `password`
-
-**⚠️ Change default passwords immediately!**
+*This script will automatically build the containers, install PHP/NPM dependencies, run database migrations, seed the initial admin account, link the storage, and optimize the framework.*
 
 ---
 
-## 📁 Project Structure
+## 🚀 Production Deployment (Updating Existing Server)
 
+When you make changes to the code on GitHub and want to update your live production server, you do **not** need to manually clear caches or restart containers.
+
+Simply SSH into your server, navigate to the folder, and run the deploy script:
+
+```bash
+cd /path/to/smm-panel
+./deploy.sh
 ```
-smm-panel/
-├── app/                    # Laravel application
-├── docker/                 # Docker configurations
-├── scripts/               # Management scripts
-│   ├── deploy.sh         # Deployment script
-│   ├── backup.sh         # Backup automation
-│   └── restore.sh        # Restore database
-├── docker-compose.prod.yml # Production setup
-├── Dockerfile             # Container image
-├── .env.production        # Environment template
-└── README.md             # This file
-```
+
+**What `deploy.sh` does automatically:**
+1. Pulls the latest code from the `main` branch.
+2. Rebuilds any Docker containers in the background without downtime.
+3. Safely runs any new database migrations.
+4. Clears and aggressively recaches the routes, views, and configs for maximum speed.
 
 ---
-
-## 🛠️ Management Commands
-
-### Start/Stop
-```bash
-# Start services
-docker-compose -f docker-compose.prod.yml up -d
-
-# Stop services
-docker-compose -f docker-compose.prod.yml down
-
-# Restart
-docker-compose -f docker-compose.prod.yml restart
-```
-
-### View Logs
-```bash
-docker-compose -f docker-compose.prod.yml logs -f
-```
-
-### Backup Database
-```bash
-./scripts/backup.sh
-```
-
-### Update Application
-```bash
-git pull
-docker-compose -f docker-compose.prod.yml exec app composer install --no-dev
-docker-compose -f docker-compose.prod.yml exec app php artisan migrate --force
-docker-compose -f docker-compose.prod.yml restart
-```
-
----
-
-## 🔧 Troubleshooting
-
-### Composer Error (vendor not found)
-```bash
-docker-compose -f docker-compose.prod.yml exec app composer install
-docker-compose -f docker-compose.prod.yml restart app
-```
-
-### Database Connection Error
-- Check `.env` has `DB_HOST=db` (not localhost)
-- Restart database: `docker-compose -f docker-compose.prod.yml restart db`
-
-### Permission Errors
-```bash
-docker-compose -f docker-compose.prod.yml exec app chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
-```
-
-### Container Not Starting
-```bash
-docker-compose -f docker-compose.prod.yml logs
-docker-compose -f docker-compose.prod.yml down
-docker-compose -f docker-compose.prod.yml up -d --build
-```
-
----
-
-## 📊 Services
-
-The application runs with these Docker containers:
-- **app** - PHP-FPM (Laravel)
-- **web** - Nginx web server
-- **db** - MariaDB database
-- **redis** - Cache & queue backend
-- **scheduler** - Cron jobs
-- **worker** - Background jobs
-
----
-
-## 🔐 Security
-
-1. Change default admin password
-2. Use strong `DB_PASSWORD` in `.env`
-3. Configure firewall:
-```bash
-sudo ufw allow 80/tcp
-sudo ufw allow 443/tcp
-sudo ufw allow 8945/tcp
-sudo ufw enable
-```
-4. Setup SSL for production domains
-5. Never commit `.env` file
-
----
-
-## 📞 Support
-
-For issues:
-- Check logs: `docker-compose -f docker-compose.prod.yml logs -f`
-- Run health check: `./scripts/health-check.sh`
-- Verify containers: `docker-compose -f docker-compose.prod.yml ps`
-
----
-
-## 📄 License
-
-Laravel SMM Panel Application
 
 ## Payment Automation (n8n Integration)
 This project supports automated payment verification via local n8n webhooks. 

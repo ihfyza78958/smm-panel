@@ -51,3 +51,17 @@ Send a `POST` request from n8n to `/api/n8n/payment-callback` with the `X-N8N-TO
 }
 ```
 *(Status must be `completed` or `rejected`)*
+
+## Sending Ticket Replies from n8n
+
+You can automatically send an admin reply back to the user's ticket from n8n.
+Send a `POST` request to `/api/n8n/ticket-reply` with your `X-N8N-TOKEN` header and the following body:
+
+```json
+{
+  "ticket_id": 45,
+  "message": "Thank you for your message. We have processed your request.",
+  "status": "closed" 
+}
+```
+*(Optional `status` can be `open`, `answered`, or `closed`)*

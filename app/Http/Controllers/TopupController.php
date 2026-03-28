@@ -98,8 +98,9 @@ class TopupController extends Controller
         // Trigger n8n Webhook for automated verification
         // ==========================================
         try {
-            $webhookUrl = env('N8N_WEBHOOK_URL', 'http://localhost:5678/webhook/payment-verify');
+            $webhookUrl = env('N8N_WEBHOOK_URL', 'http://10.0.0.1:5678/webhook-test/payment-verify');
             \Illuminate\Support\Facades\Http::timeout(3)->post($webhookUrl, [
+                'event_type' => 'payment_submit',
                 'transaction_internal_id' => $transaction->id,
                 'user_id' => $transaction->user_id,
                 'user_email' => $transaction->user->email ?? '',

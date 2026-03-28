@@ -16,8 +16,12 @@
     <meta property="og:title" content="{{ $post->title }}">
     <meta property="og:description" content="{{ $post->excerpt }}">
     <meta property="og:site_name" content="NepalBoost">
-    @if($post->featured_image)
-    <meta property="og:image" content="{{ asset('storage/' . $post->featured_image) }}">
+    @if($post->image)
+    <meta property="og:image" content="{{ asset('storage/' . $post->image) }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    @else
+    <meta property="og:image" content="{{ asset('images/seo-banner.jpg') }}">
     @endif
     <meta property="article:published_time" content="{{ $post->created_at->toIso8601String() }}">
     
@@ -25,8 +29,10 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{{ $post->title }}">
     <meta name="twitter:description" content="{{ $post->excerpt }}">
-    @if($post->featured_image)
-    <meta name="twitter:image" content="{{ asset('storage/' . $post->featured_image) }}">
+    @if($post->image)
+    <meta name="twitter:image" content="{{ asset('storage/' . $post->image) }}">
+    @else
+    <meta name="twitter:image" content="{{ asset('images/seo-banner.jpg') }}">
     @endif
     
     <!-- JSON-LD Article -->
@@ -37,8 +43,8 @@
         "headline": "{{ $post->title }}",
         "description": "{{ $post->excerpt }}",
         "url": "{{ route('blog.show', $post->slug) }}",
-        @if($post->featured_image)
-        "image": "{{ asset('storage/' . $post->featured_image) }}",
+        @if($post->image)
+        "image": "{{ asset('storage/' . $post->image) }}",
         @endif
         "datePublished": "{{ $post->created_at->toIso8601String() }}",
         "dateModified": "{{ $post->updated_at->toIso8601String() }}",
@@ -67,10 +73,14 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        .prose img {
-            border-radius: 0.75rem;
-            margin-bottom: 2rem;
-        }
+        .prose img { border-radius: 0.75rem; margin-bottom: 2rem; }
+        .prose h2 { font-size: 1.875rem; font-weight: 800; color: #111827; margin-top: 2.5rem; margin-bottom: 1rem; }
+        .prose h3 { font-size: 1.5rem; font-weight: 700; color: #1f2937; margin-top: 2rem; margin-bottom: 1rem; }
+        .prose p { margin-bottom: 1.25rem; line-height: 1.75; color: #4b5563; }
+        .prose ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1.5rem; }
+        .prose li { margin-bottom: 0.5rem; color: #4b5563; }
+        .prose strong { font-weight: 700; color: #111827; }
+        .prose em { font-style: italic; }
     </style>
 </head>
 <body class="antialiased bg-gray-50 text-gray-800 selection:bg-indigo-500 selection:text-white">
@@ -127,7 +137,7 @@
             @endif
 
             <div class="prose prose-lg prose-indigo mx-auto bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-gray-100">
-                {!! nl2br(e($post->content)) !!}
+                {!! $post->content !!}
             </div>
 
             <!-- Share / CTA -->

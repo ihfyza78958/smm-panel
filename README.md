@@ -1,65 +1,53 @@
-# SMM Panel 🚀
+# SMM Panel with n8n Automation
 
-A modern, highly optimized, dockerized Laravel SMM Panel built for the Nepali and Indian markets.
+This repository contains an SMM Panel application with built-in integrations for **n8n Automation**.
 
-## Key Features
-- **Fully Dockerized** for instant, identical deployments anywhere
-- **eSewa / Khalti / Bank** Payment Automation (via n8n Webhooks)
-- **Automatic Nightly Sync** (Pulls new services, adjusts pricing, removes dead services)
-- **Built-in SEO Blog** engine for organic ranking
-- **Mobile-first UI**
+## Webhook Architecture
 
----
+The panel is configured to send various platform events to a single unified n8n webhook. 
 
-## 🛠️ Installation (First Time Setup on New Server)
+### Unified Webhook URL
+By default, the application pushes payloads to:
+`http://n8n-automation:5678/webhook/smm-events`
 
-### Prerequisites
-- A Linux Server (Ubuntu 22.04+ recommended)
-- **Docker** & **Docker Compose** installed
-- **Git** installed
+### Supported Event Types
 
-### Step 1: Clone the repository
-```bash
-git clone https://github.com/ioprakash/smm-panel.git
-cd smm-panel
+The payloads sent to n8n include an `event_type` property so you can easily route them using an n8n Switch Node.
+
+1. **`payment_submit`**
+   * Triggered when a user requests a new wallet top-up / payment.
+   * Properties include: `transaction_internal_id`, `user_id`, `amount`, `transaction_code`, `payment_method`, etc.
+
+2. **`ticket_create`**
+   * Triggered when a user opens a new support ticket.
+   * Properties include: `ticket_id`, `user_id`, `subject`, `priority`, `message`, etc.
+
+3. **`ticket_reply`**
+   * Triggered when a user replies to an existing support ticket.
+   * Properties include: `ticket_id`, `user_id`, `subject`, `message`, etc.
+
+## Setup
+
+Ensure your `.env` file has the proper webhook URL and security secret set:
+
+```env
+# URL for outgoing webhooks to n8n
+N8N_WEBHOOK_URL="http://n8n-automation:5678/webhook/smm-events"
+
+# Security token for incoming requests from n8n
+N8N_SECRET="your_secure_token_here"
 ```
 
-### Step 2: Configure Environment
-```bash
-cp .env.example .env
-nano .env
+## Receiving Approvals from n8n
+
+The SMM Panel can accept automated approval or rejection of top-ups directly from n8n.
+Send a `POST` request from n8n to `/api/n8n/payment-callback` with the `X-N8N-TOKEN` header matching your `N8N_SECRET` and the following JSON body:
+
+```json
+{
+  "transaction_internal_id": 123,
+  "status": "completed", 
+  "message": "Verified via n8n automated flow."
+}
 ```
-*Update your database credentials, domain name (`APP_URL`), Google Client IDs, and n8n webhook keys.*
-
-### Step 3: Run the Auto-Installer
-```bash
-chmod +x install.sh
-./install.sh
-```
-*This script will automatically build the containers, install PHP/NPM dependencies, run database migrations, seed the initial admin account, link the storage, and optimize the framework.*
-
----
-
-## 🚀 Production Deployment (Updating Existing Server)
-
-When you make changes to the code on GitHub and want to update your live production server, you do **not** need to manually clear caches or restart containers.
-
-Simply SSH into your server, navigate to the folder, and run the deploy script:
-
-```bash
-cd /path/to/smm-panel
-./deploy.sh
-```
-
-**What `deploy.sh` does automatically:**
-1. Pulls the latest code from the `main` branch.
-2. Rebuilds any Docker containers in the background without downtime.
-3. Safely runs any new database migrations.
-4. Clears and aggressively recaches the routes, views, and configs for maximum speed.
-
----
-
-## Payment Automation (n8n Integration)
-This project supports automated payment verification via local n8n webhooks. 
-When users submit transaction codes, it securely triggers local verification flows. 
-For setup instructions, headers, and payload structures, please read the [N8N_AUTOMATION.md](N8N_AUTOMATION.md) guide.
+*(Status must be `completed` or `rejected`)*

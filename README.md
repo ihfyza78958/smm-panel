@@ -65,3 +65,37 @@ Send a `POST` request to `/api/n8n/ticket-reply` with your `X-N8N-TOKEN` header 
 }
 ```
 *(Optional `status` can be `open`, `answered`, or `closed`)*
+
+---
+
+## Production Deployment (GitOps Workflow)
+
+The deployment for this SMM Panel on the production server is fully automated via Git.
+
+### 1. Develop Locally
+Make your code changes, test them, and then commit them to the repository:
+```bash
+git add .
+git commit -m "Describe your changes"
+git push myfork main
+```
+
+### 2. Deploy to Production
+Log into your production server (`192.168.10.5`):
+```bash
+ssh -p 2222 pro@192.168.10.5
+```
+
+Navigate to the project directory and run the deployment script:
+```bash
+cd /opt/docker/smm-panel
+sudo ./deploy.sh
+```
+
+**What `deploy.sh` does:**
+- `git pull origin main` (Securely fetches the latest code using the Deploy Key)
+- Rebuilds Docker images and restarts containers with zero-downtime using `docker compose`
+- Runs any missing database migrations (`php artisan migrate --force`)
+- Clears and rebuilds Laravel caches (config, events, routes, views)
+
+Your changes will be live immediately after the script finishes!
